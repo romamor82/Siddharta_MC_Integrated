@@ -1,0 +1,845 @@
+// define a parameter for later use
+
+
+:P X_SHIEL 50.*cm
+:P HALF_X_SHIEL 0.5*$X_SHIEL
+//:P Y_SHIEL 33.*cm
+:P Y_SHIEL 31.*cm
+:P HALF_Y_SHIEL 0.5*$Y_SHIEL
+//:P Z_SHIEL 4.9*cm
+//:P Z_SHIEL 53.0*mm
+:P Z_SHIEL 52.0*mm
+:P HALF_Z_SHIEL 0.5*$Z_SHIEL
+
+:P z_shiel_Al 5.0*mm
+//:P z_shiel_Al 30.0*mm
+
+:P SH_ANGLE 120.*deg
+//:P DY_SH $Z_SHIEL/tan(90.*deg-0.5*$SH_ANGLE)
+:P DY_SH $Z_SHIEL/tan(0.5*$SH_ANGLE)
+
+//:P DY_SH 5.*cm
+:P Y_SHIEL1 $Y_SHIEL
+:P HALF_Y_SHIEL1 $HALF_Y_SHIEL
+:P Y_SHIEL2 $Y_SHIEL-2.*$DY_SH
+:P HALF_Y_SHIEL2 $HALF_Y_SHIEL-$DY_SH
+
+
+:P DY_SH2 $z_shiel_Al/tan(0.5*$SH_ANGLE)
+:P HALF_Y_SHIEL3 $HALF_Y_SHIEL1+$DY_SH2
+
+:P L_SHIEL2 40.*cm
+:P L_SHIEL3 50.*cm
+
+
+//:MIXT kapton 1.42 4
+//H 0.0273
+//C 0.7213
+//N 0.0765
+//O 0.1749
+
+:MIXT_BY_NATOMS kapton 1.42 4
+C 22
+H 10
+O 5
+N 2
+
+:MIXT_BY_NATOMS teflon 2.2 2
+C 1
+F 4
+
+
+// Define elements
+:ELEM Hydrogen H 1. 1.
+:ELEM Oxygen O 8 16.
+:MIXT Water 1. 2
+      Hydrogen   2./18.
+      Oxygen     16./18.
+
+//define materials
+//:MATE SIDD_H 1. 1. 0.005
+:MATE SIDD_H 1. 1.00794 0.00107972
+
+:MATE SIDD_He 2. 4.0026 0.00107972
+
+:MATE Iron 26. 55.85 7.87
+
+// Define rotation matrix
+:ROTM R00 0. 0. 0.  // unit matrix
+:ROTM R01 90.*deg 0. 0.  // unit matrix
+
+:ROTM R10 90.*deg -90.*deg 0.
+
+:P angle0 60.
+:P angle1 -90.
+:P angle2 0.
+
+:ROTM R11 180.*deg-$SH_ANGLE*rad $angle1*deg $angle2*deg
+:ROTM R12 -(180.*deg-$SH_ANGLE*rad) -$angle1*deg $angle2*deg
+
+
+
+:MATE Fe 26. 55.845 7.874
+:MATE Silicon 14. 28.0855 2.3290
+
+:MIXT_BY_NATOMS Polyethylene 0.930 2  // DENSITY !!!!!!!!!!!!!!!!!!!!!!!!!!!
+C 2
+H 4
+
+//-------Mylar-------
+//:MIXT mylar 1.39 3
+//C 0.625
+//H 0.042
+//O 0.333
+:MIXT_BY_NATOMS mylar 1.370 3 // DENSITY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+C 10
+H 8
+O 4
+
+:MIXT paper 1.39 3  //  WHATTT  ???!!!!!!! CHECK PAPER !!!!!!!!!!!!!!!!
+C 0.625
+H 0.042
+O 0.333
+
+
+:MIXT_BY_NATOMS BC_420 1.032 2 // C27H30
+C 27
+H 30
+
+:MATE SID_Al 13. 26.9815386 2.7
+//:MATE SID_Ti 22. 47.867 4.506
+:MATE SID_Ti 22. 47.867 4.54
+
+:MIXT_BY_NATOMS SID_Ceramic 2.7 3
+Al 2
+Si 1
+O  3
+
+
+
+:P bp_r3 0.5*59.0*mm
+//0.5*60.*mm 0.5*49.*mm 0.5*1450*um
+:P dx_kdtop 60.*mm
+:P dy_kdtop 49.*mm
+:P dz_kdtop 1450*um
+:P dist_beampipe_kdtop 1.0*cm
+//:P pos_kdtop $bp_r3+$dist_beampipe_kdtop+0.5*$dz_kdtop
+:P pos_kdtop 60.0*mm
+
+//:VOLU "KaonDetectorBottom" BOX  0.5*60.*mm 0.5*49.*mm 0.5*1450*um BC_420
+:P dx_kdbottom 72.*mm
+:P dy_kdbottom 72.*mm
+:P dz_kdbottom 1450*um
+:P dist_beampipe_kdbottom 1.0*cm
+//:P pos_kdbottom -$bp_r3-$dist_beampipe_kdbottom-0.5*$dz_kdbottom
+:P pos_kdbottom -60.0*mm
+
+//:P dist_km_shield 2.0*cm
+//:P dist_km_shield 2.0*mm
+:P dist_km_shield 5.0*mm
+//:P pos_shield $pos_kdtop+0.5*$dz_kdtop+$dist_km_shield+0.5*$Z_SHIEL
+//:P pos_shield 65.0*mm+0.5*$Z_SHIEL
+:P pos_shield $pos_kdtop+0.5*$dz_kdtop+$dist_km_shield+$z_shiel_Al+0.5*$Z_SHIEL
+
+
+:P VX1 0.
+//:P VY1 12.*cm
+:P VY1 $pos_shield
+:P VZ1 0.
+
+:P VX2 0.
+:P VY2 0.
+:P VZ2 $HALF_Y_SHIEL-0.5*$DY_SH
+
+:P VX3 0.
+//:P VY3 ($L_SHIEL2-0.5*$DY_SH)*sin(180.*deg-$SH_ANGLE*rad)
+:P VY3 0.5*($L_SHIEL2-0.5*$DY_SH)*sin(180.*deg-$SH_ANGLE*rad)
+//:P VY3 0.
+//:P VZ3 0.
+:P VZ3 0.5*($L_SHIEL2-0.5*$DY_SH)*cos(180.*deg-$SH_ANGLE*rad)
+
+
+
+:P VX4 $VX1+$VX2+$VX3
+:P VY4 $VY1+$VY2+$VY3
+:P VZ4 $VZ1+$VZ2+$VZ3
+
+:P VY1P $pos_shield-0.5*$Z_SHIEL-0.5*$z_shiel_Al
+:P VY3P 0.5*($L_SHIEL3-0.5*$DY_SH2)*sin(180.*deg-$SH_ANGLE*rad)
+
+:P VZ2P $HALF_Y_SHIEL+0.5*$DY_SH2
+//:P VZ3P 0.5*($L_SHIEL3+0.5*$DY_SH2)*cos(180.*deg-$SH_ANGLE*rad)
+:P VZ3P 0.5*($L_SHIEL3-0.5*$DY_SH2)*cos(180.*deg-$SH_ANGLE*rad)
+
+//:P VX4Al $VX1+$VX2+$VX3
+//:P VY4Al $VY1P+$VY2+$VY3P
+//:P VZ4Al $VZ1+$VZ2P+$VZ3P
+
+
+:P VX4Al $VX1+$VX2+$VX3
+:P VY4Al $VY1P+$VY2+$VY3P
+:P VZ4Al $VZ1+$VZ2P+$VZ3P
+
+
+:P VX5 $VX1+$VX2+$VX3
+:P VY5 +$VY1+$VY2+$VY3
+:P VZ5 -$VZ1-$VZ2-$VZ3
+
+:P VX5Al $VX1+$VX2+$VX3
+:P VY5Al $VY1P+$VY2+$VY3P
+:P VZ5Al -$VZ1-$VZ2P-$VZ3P
+
+
+//:VOLU "Degrader" BOX  5.*cm 5.*cm 0.42*mm mylar
+:P degrader_step 20.0*mm
+:P dx_degrader 6*$degrader_step
+:P dy_degrader 6*$degrader_step
+:P dz_degrader 0.84*mm
+:P dist_shield_degrader 1.0*mm
+:P pos_degrader $pos_shield+0.5*$Z_SHIEL+$dist_shield_degrader+0.5*$dz_degrader
+
+//:VOLU "VCHCON" CONS 11.*cm 12.*cm 19.*cm 20.*cm 13.*cm 0. 360.*deg G4_Al
+:P thikness_vac_chamb 1.0*cm
+:P r1_vac_chamb 11.*cm
+:P r2_vac_chamb $r1_vac_chamb+$thikness_vac_chamb
+:P r3_vac_chamb 19.*cm
+:P r4_vac_chamb $r3_vac_chamb+$thikness_vac_chamb
+:P dz_vac_chamb 26.*cm
+//:P dist_deg_vac 2.0*cm
+:P dist_deg_vac 22*mm
+:P pos_vac_chamb $pos_degrader+0.5*$dz_degrader+$dist_deg_vac+0.5*$dz_vac_chamb+$thikness_vac_chamb
+
+:P r1_entrance 7.0*cm
+:P r2_entrance 8.0*cm
+//:P dz_cyl_entrance 1.0*cm
+:P dz_cyl_entrance 1.0*mm
+:P thikness_entrance 120.*um
+
+:P dx_calib_foil 10.0*cm
+:P dy_calib_foil 10.0*cm
+:P dz_calib_foil 50.*um
+:P pos_calib_foil $pos_degrader+0.5*$dz_degrader+0.5*$dz_calib_foil
+
+//:P r_target 7.0*cm
+:P r_target 0.5*137.0*mm
+//:P dz_target 16.5*cm
+:P dz_target 166.0*mm
+:P dist_vac_target 10.0*mm
+:P pos_target $pos_vac_chamb-0.5*$dz_vac_chamb+$dist_vac_target+0.5*$dz_target
+
+//:P R_SDD 9.*cm
+:P R_SDD 78.0*mm
+:P DY_SDD 40*mm
+//:P DY_SDDBOX $DY_SDD+1.*cm
+//:P DX_SDDBOX 11*mm
+
+:P SDDcaseWidth 2.*mm
+:P SDDX 450.*um
+:P SDDY 1.*cm
+:P SDDZ 1.*cm
+:P SDDBASE_X 7.0*mm
+:P SDDSTRIPY 2.*mm
+//:P SDDSTRIPX 2.*mm
+:P SDDSTRIPX 4.*mm
+:P DX_SDD $SDDBASE_X+$SDDSTRIPX+$SDDcaseWidth
+
+//:P DX_SDDBOX 21*mm
+//:P DX_SDDBOX $SDDBASE_X+$SDDSTRIPX+$SDDcaseWidth+1.0*mm
+:P DX_SDDBOX $SDDBASE_X+$SDDSTRIPX+$SDDcaseWidth
+:P DY_SDDBOX 50*mm
+:P DZ_SDDBOX 55*mm
+
+:P DZ_SDD 55.0*mm
+:P HALF_DZ_SDD  0.5*$DZ_SDD
+:P R_SDD_INT $R_SDD-0.5*$DX_SDD
+//:P THETA_SDD 2.*atan(0.5*$DY_SDD/$R_SDD_INT)
+:P THETA_SDD 2.*atan(0.5*$DY_SDDBOX/$R_SDD_INT)
+//:P Y_SDD1 26.0*cm
+:P Y_SDD1 $pos_target
+//:P Y_SDD2 20.5*cm
+:P Y_SDD2 $pos_target-2*0.5*$DZ_SDD
+:P Y_SDD0 $pos_target+2*0.5*$DZ_SDD
+:P Z_SDD00 0.0*cm
+:P Z_SDD10 0.0*cm
+:P Z_SDD20 0.0*cm
+:P X_SDD00 $R_SDD
+:P X_SDD10 $R_SDD
+:P X_SDD20 $R_SDD
+:P X_SDD0 cos(0.5*$THETA_SDD)*$X_SDD00+sin(0.5*$THETA_SDD)*$Z_SDD00
+:P Z_SDD0 -sin(0.5*$THETA_SDD)*$X_SDD00+cos(0.5*$THETA_SDD)*$Z_SDD00
+:P X_SDD1 cos(0.5*$THETA_SDD)*$X_SDD10+sin(0.5*$THETA_SDD)*$Z_SDD10
+:P Z_SDD1 -sin(0.5*$THETA_SDD)*$X_SDD10+cos(0.5*$THETA_SDD)*$Z_SDD10
+:P X_SDD2 cos(0.5*$THETA_SDD)*$X_SDD20+sin(0.5*$THETA_SDD)*$Z_SDD20
+:P Z_SDD2 -sin(0.5*$THETA_SDD)*$X_SDD20+cos(0.5*$THETA_SDD)*$Z_SDD20
+//:P X_SDD1 $R_SDD
+//:P X_SDD2 $R_SDD
+:P X_COL00 $X_SDD0
+:P Z_COL00 $Z_SDD0
+:P X_COL10 $X_SDD1
+:P Z_COL10 $Z_SDD1
+:P X_COL20 $X_SDD2
+:P Z_COL20 $Z_SDD2
+:P X_COL01 cos($THETA_SDD)*$X_SDD0+sin($THETA_SDD)*$Z_SDD0
+:P Z_COL01 -sin($THETA_SDD)*$X_SDD0+cos($THETA_SDD)*$Z_SDD0
+:P X_COL11 cos($THETA_SDD)*$X_SDD1+sin($THETA_SDD)*$Z_SDD1
+:P Z_COL11 -sin($THETA_SDD)*$X_SDD1+cos($THETA_SDD)*$Z_SDD1
+:P X_COL21 cos($THETA_SDD)*$X_SDD2+sin($THETA_SDD)*$Z_SDD2
+:P Z_COL21 -sin($THETA_SDD)*$X_SDD2+cos($THETA_SDD)*$Z_SDD2
+:P X_COL02 cos(-$THETA_SDD)*$X_SDD0+sin(-$THETA_SDD)*$Z_SDD0
+:P Z_COL02 -sin(-$THETA_SDD)*$X_SDD0+cos(-$THETA_SDD)*$Z_SDD0
+:P X_COL12 cos(-$THETA_SDD)*$X_SDD1+sin(-$THETA_SDD)*$Z_SDD1
+:P Z_COL12 -sin(-$THETA_SDD)*$X_SDD1+cos(-$THETA_SDD)*$Z_SDD1
+:P X_COL22 cos(-$THETA_SDD)*$X_SDD2+sin(-$THETA_SDD)*$Z_SDD2
+:P Z_COL22 -sin(-$THETA_SDD)*$X_SDD2+cos(-$THETA_SDD)*$Z_SDD2
+:P X_COL03 cos(-2.*$THETA_SDD)*$X_SDD0+sin(-2.*$THETA_SDD)*$Z_SDD0
+:P Z_COL03 -sin(-2.*$THETA_SDD)*$X_SDD0+cos(-2.*$THETA_SDD)*$Z_SDD0
+:P X_COL13 cos(-2.*$THETA_SDD)*$X_SDD1+sin(-2.*$THETA_SDD)*$Z_SDD1
+:P Z_COL13 -sin(-2.*$THETA_SDD)*$X_SDD1+cos(-2.*$THETA_SDD)*$Z_SDD1
+:P X_COL23 cos(-2.*$THETA_SDD)*$X_SDD2+sin(-2.*$THETA_SDD)*$Z_SDD2
+:P Z_COL23 -sin(-2.*$THETA_SDD)*$X_SDD2+cos(-2.*$THETA_SDD)*$Z_SDD2
+:P X_COL04 -$X_COL00
+:P Z_COL04 -$Z_COL00
+:P X_COL14 -$X_COL10
+:P Z_COL14 -$Z_COL10
+:P X_COL24 -$X_COL20
+:P Z_COL24 -$Z_COL20
+:P X_COL05 -$X_COL01
+:P Z_COL05 -$Z_COL01
+:P X_COL15 -$X_COL11
+:P Z_COL15 -$Z_COL11
+:P X_COL25 -$X_COL21
+:P Z_COL25 -$Z_COL21
+:P X_COL06 -$X_COL02
+:P Z_COL06 -$Z_COL02
+:P X_COL16 -$X_COL12
+:P Z_COL16 -$Z_COL12
+:P X_COL26 -$X_COL22
+:P Z_COL26 -$Z_COL22
+:P X_COL07 -$X_COL03
+:P Z_COL07 -$Z_COL03
+:P X_COL17 -$X_COL13
+:P Z_COL17 -$Z_COL13
+:P X_COL27 -$X_COL23
+:P Z_COL27 -$Z_COL23
+:ROTM R02 90.*deg 0. -0.5*$THETA_SDD*rad+180.*deg
+:ROTM R03 90.*deg 0. -1.5*$THETA_SDD*rad+180.*deg
+:ROTM R04 90.*deg 0.  0.5*$THETA_SDD*rad+180.*deg
+:ROTM R05 90.*deg 0.  1.5*$THETA_SDD*rad+180.*deg
+:ROTM R06 90.*deg 0. -0.5*$THETA_SDD*rad 
+:ROTM R07 90.*deg 0. -1.5*$THETA_SDD*rad 
+:ROTM R08 90.*deg 0.  0.5*$THETA_SDD*rad 
+:ROTM R09 90.*deg 0.  1.5*$THETA_SDD*rad 
+
+:P teflon_cone_w 2.0*mm
+:P cryo_ent_kapton_w 125.0*um
+:P teflon_cyl_w 1.0*mm
+:P cryo_cyl_teflon_z 0.5*$thikness_vac_chamb-0.5*$cryo_ent_kapton_w
+
+//:ROTM R15 180.*deg 0. 0.  
+//:VOLU beam_pipe CONS 29.86*mm 52.86*mm 29.86*mm 32.86*mm 25.*mm 0.*deg 360.*deg G4_W
+//:PLACE beam_pipe 1 World R00 0. 0. -140.*mm
+//:PLACE beam_pipe 2 World R15 0. 0. 140.*mm
+//:COLOUR beam_pipe 1. 0. 0. 0.
+
+//:VOLU "SputnikCyl" TUBS  0.5*61.0*mm  0.5*102.0*mm 0.5*64.0*mm 0. 360.*deg
+//G4_Pb
+//:VOLU "SputnikCyl" TUBS  0.5*61.0*mm  0.5*109.0*mm 0.5*64.0*mm 0. 360.*deg
+//G4_Pb
+
+//:VOLU "SputnikCyl" TUBS  0.5*60.0*mm  0.5*108.0*mm 0.5*64.0*mm 0. 360.*deg G4_Pb
+//:PLACE "SputnikCyl" 1 World R00 0. 0. 151.24*mm+0.5*64.0*mm
+//:PLACE "SputnikCyl" 2 World R00 0. 0. -151.24*mm-0.5*64.0*mm
+////:COLOUR "SputnikCyl" 0. 1. 0. 0.
+//:COLOUR "SputnikCyl" 1. 0.70 0.
+//
+////:CHECK_OVERLAPS SputnikCyl ON 0. 1. 0.
+////:CHECK_OVERLAPS * ON 0. 1. 0.
+//:VOLU CalibrationF BOX 0.5*$dx_calib_foil 0.5*$dy_calib_foil 0.5*$dz_calib_foil G4_Ti
+//:PLACE CalibrationF 1 World R01 0. $pos_calib_foil 0.
+//:COLOUR CalibrationF 1. 0.5 0.2 0.
+//:P dx1_deg $dx_degrader
+//:P dy1_deg $dy_degrader
+//:P dz1_deg 425.*um
+////:P dz1_deg 525.*um
+////:P dz1_deg 1.*cm
+//:P pos1_deg $pos_shield+0.5*$Z_SHIEL+$dist_shield_degrader+0.5*$dz1_deg
+//
+//:P dx2_deg $dx_degrader-$degrader_step
+//:P dy2_deg $dy_degrader
+//:P dz2_deg 100.*um
+////:P dz2_deg 1*cm
+//:P pos2_deg $pos1_deg+0.5*$dz1_deg+0.5*$dz2_deg
+//:P posx_deg2 0.5*$degrader_step
+//
+//:P dx3_deg $dx_degrader-2.*$degrader_step
+//:P dy3_deg $dy_degrader
+//:P dz3_deg 100.*um
+////:P dz3_deg 1*cm
+//:P pos3_deg $pos2_deg+0.5*$dz2_deg+0.5*$dz3_deg
+//:P posx_deg3 0.5*2.*$degrader_step
+//
+//:P dx4_deg $dx_degrader-3.*$degrader_step
+//:P dy4_deg $dy_degrader
+//:P dz4_deg 200.*um
+////:P dz4_deg 1*cm
+//:P pos4_deg $pos3_deg+0.5*$dz3_deg+0.5*$dz4_deg
+//:P posx_deg4 0.5*3.*$degrader_step
+//
+//:P dx5_deg $dx_degrader-4.*$degrader_step
+//:P dy5_deg $dy_degrader
+//:P dz5_deg 100.*um
+////:P dz5_deg 1*cm
+//:P pos5_deg $pos4_deg+0.5*$dz4_deg+0.5*$dz5_deg
+//:P posx_deg5 0.5*4.*$degrader_step
+//
+//:P dx6_deg $dx_degrader-5.*$degrader_step
+//:P dy6_deg $dy_degrader
+//:P dz6_deg 100.*um
+////:P dz6_deg 1*cm
+//:P pos6_deg $pos5_deg+0.5*$dz5_deg+0.5*$dz6_deg
+//:P posx_deg6 0.5*5.*$degrader_step
+//
+//:VOLU "Degraderbase" BOX  0.5*$dx1_deg 0.5*$dy1_deg 0.5*$dz1_deg mylar
+//:PLACE "Degraderbase" 1 World R01 0. $pos1_deg 0.
+//
+//:VOLU "Degrader2" BOX  0.5*$dx2_deg 0.5*$dy2_deg 0.5*$dz2_deg mylar
+//:PLACE "Degrader2" 1 World R01 $posx_deg2 $pos2_deg 0.
+//
+//:VOLU "Degrader3" BOX  0.5*$dx3_deg 0.5*$dy3_deg 0.5*$dz3_deg mylar
+//:PLACE "Degrader3" 1 World R01 $posx_deg3 $pos3_deg 0.
+//
+//:VOLU "Degrader4" BOX  0.5*$dx4_deg 0.5*$dy4_deg 0.5*$dz4_deg mylar
+//:PLACE "Degrader4" 1 World R01 $posx_deg4 $pos4_deg 0.
+//
+//:VOLU "Degrader5" BOX  0.5*$dx5_deg 0.5*$dy5_deg 0.5*$dz5_deg mylar
+//:PLACE "Degrader5" 1 World R01 $posx_deg5 $pos5_deg 0.
+//
+//:VOLU "Degrader6" BOX  0.5*$dx6_deg 0.5*$dy6_deg 0.5*$dz6_deg mylar
+//:PLACE "Degrader6" 1 World R01 $posx_deg6 $pos6_deg 0.
+//
+//:COLOUR "Degraderbase" 0. 1. 0. 0.
+//:COLOUR "Degrader2" 1. 0. 0. 0.
+//:COLOUR "Degrader3" 0. 0. 1. 0.
+//:COLOUR "Degrader4" 1. 1. 0. 0.
+//:COLOUR "Degrader5" 1. 0. 0. 0.
+//:COLOUR "Degrader6" 0. 0. 1. 0.
+//:P ghost_x 200.0*mm
+//:P ghost_y 200.0*mm
+//:P ghost_z 1.0*mm
+//:P dist_ghost_paper 4.0*mm
+//
+//:VOLU "Ghost" BOX  0.5*$ghost_x 0.5*$ghost_y 0.5*$ghost_z G4_AIR
+//:PLACE "Ghost" 1 World R01 0. $pos_vac_chamb-0.5*$dz_vac_chamb-2*0.5*$thikness_vac_chamb-2*0.5*$dz_cyl_entrance-0.5*$thikness_entrance-0.5*$ghost_z-$dist_ghost_paper 0.
+//:COLOUR "Ghost" 0. 0. 1. 0.
+//:VOLU "KaonDetectorBottom" BOX  0.5*$dx_kdbottom 0.5*$dy_kdbottom 0.5*$dz_kdbottom BC_420
+//:PLACE "KaonDetectorBottom" 1 World R01 0. $pos_kdbottom 0.
+//:COLOUR "KaonDetectorBottom" 0. 1. 0. 
+
+//----Al---------
+//:P km_alb_w 3*um // ????????
+:P km_alb_w 1*um // ????????
+:P kmtop_alb_x $dx_kdbottom
+:P kmtop_alb_y $dy_kdbottom
+
+//:VOLU KaonDetectorAl_b BOX 0.5*$kmtop_alb_x 0.5*$kmtop_alb_y 0.5*$km_alb_w SID_Al
+//:PLACE KaonDetectorAl_b 1 World R01 0. $pos_kdbottom+0.5*$dz_kdbottom+0.5*$km_alb_w 0.
+//:PLACE KaonDetectorAl_b 2 World R01 0. $pos_kdbottom-0.5*$dz_kdbottom-0.5*$km_alb_w 0.
+//:COLOUR KaonDetectorAl_b 1. 1. 0. 
+
+//-------Mylar-------
+//:P km_myb_w 3*um // ????????
+:P km_myb_w 30*um // ????????
+
+//:VOLU KaonDetectorMy_b BOX 0.5*$kmtop_alb_x 0.5*$kmtop_alb_y 0.5*$km_myb_w mylar
+//:PLACE KaonDetectorMy_b 1 World R01 0. $pos_kdbottom+0.5*$dz_kdbottom+$km_alb_w+0.5*$km_myb_w 0.
+//:PLACE KaonDetectorMy_b 2 World R01 0. $pos_kdbottom-0.5*$dz_kdbottom-$km_alb_w-0.5*$km_myb_w 0.
+//:COLOUR KaonDetectorMy_b 1. 1. 0. 
+
+//--------black tape-----
+:P km_btb_w 135.0*um // ????????
+//:P km_btb_w 250.5*um // ????????
+
+//:VOLU KaonDetectorbt_b BOX 0.5*$kmtop_alb_x 0.5*$kmtop_alb_y 0.5*$km_btb_w mylar
+//:PLACE KaonDetectorbt_b 1 World R01 0. $pos_kdbottom+0.5*$dz_kdbottom+$km_alb_w+$km_myb_w+0.5*$km_btb_w 0.
+//:PLACE KaonDetectorbt_b 2 World R01 0. $pos_kdbottom-0.5*$dz_kdbottom-$km_alb_w-$km_myb_w-0.5*$km_btb_w 0.
+//:COLOUR KaonDetectorbt_b 1. 1. 0. 
+
+//:VOLU "KaonDetectorTop" BOX  0.5*$dx_kdtop 0.5*$dy_kdtop 0.5*$dz_kdtop BC_420
+//:PLACE "KaonDetectorTop" 1 World R01 0. $pos_kdtop 0.
+//:COLOUR "KaonDetectorTop" 0. 1. 0. 
+
+////----Al---------
+////:P km_alt_w 3*um // ????????
+//:P km_alt_w 1*um // ????????
+//:P kmtop_alt_x 60.0*mm
+//:P kmtop_alt_y 49.0*mm
+//
+//:VOLU KaonDetectorAl BOX 0.5*$kmtop_alt_x 0.5*$kmtop_alt_y 0.5*$km_alt_w SID_Al
+//:PLACE KaonDetectorAl 1 World R01 0. $pos_kdtop+0.5*$dz_kdtop+0.5*$km_alt_w 0.
+//:PLACE KaonDetectorAl 2 World R01 0. $pos_kdtop-0.5*$dz_kdtop-0.5*$km_alt_w 0.
+//:COLOUR KaonDetectorAl 1. 1. 0. 
+
+////:P km_my_w 3*um // ???????
+//:P km_my_w 30*um // ???????
+//
+//:VOLU KaonDetectorMy BOX 0.5*$kmtop_alt_x 0.5*$kmtop_alt_y 0.5*$km_my_w mylar
+//:PLACE KaonDetectorMy 1 World R01 0. $pos_kdtop+0.5*$dz_kdtop+$km_alt_w+0.5*$km_my_w 0.
+//:PLACE KaonDetectorMy 2 World R01 0. $pos_kdtop-0.5*$dz_kdtop-$km_alt_w-0.5*$km_my_w 0.
+//:COLOUR KaonDetectorMy 1. 1. 0. 
+
+//--------black tape-----
+//:P km_bt_w 135.0*um // ????????
+////:P km_bt_w 250.5*um // ????????
+
+//:VOLU KaonDetectorbt BOX 0.5*$kmtop_alt_x 0.5*$kmtop_alt_y 0.5*$km_bt_w mylar //cambiare materiale(black tape=C10 H8 O4)
+//:PLACE KaonDetectorbt 1 World R01 0. $pos_kdtop+0.5*$dz_kdtop+$km_alt_w+$km_my_w+0.5*$km_bt_w 0.
+//:PLACE KaonDetectorbt 2 World R01 0. $pos_kdtop-0.5*$dz_kdtop-$km_alt_w-$km_my_w-0.5*$km_bt_w 0.
+//:COLOUR KaonDetectorbt 1. 1. 0. 
+//:VOLU "KPlusDetector" BOX  0.5*160.0*mm 0.5*80.0*mm 0.5*20.0*mm G4_AIR
+////:VOLU "KPlusDetector" BOX  0.5*160.0*mm 0.5*80.0*mm 0.5*20.0*mm BC_420
+//:PLACE "KPlusDetector" 1 World R01 0. -9.*cm 0.
+//:COLOUR "KPlusDetector" 0. 0. 1. 
+//:VOLU SDDBOX BOX 0.5*$DX_SDD 0.5*$DY_SDD 0.5*$DZ_SDD G4_Galactic
+//:VOLU SDDBOX BOX 0.5*11*mm 0.5*40*mm 0.5*55*mm G4_Galactic
+
+//:VOLU SDDBOX BOX 0.5*$DX_SDD 0.5*$DY_SDDBOX 0.5*$DZ_SDD G4_Galactic
+//:VOLU SDDBOX BOX 0.5*$DX_SDDBOX 0.5*$DY_SDDBOX 0.5*$DZ_SDDBOX G4_Galactic
+//:PLACE SDDBOX 1 World R00 0. 300. 0.
+//:PLACE SDDBOX 1 World R02 $X_COL00 $Y_SDD0 $Z_COL00
+//:PLACE SDDBOX 2 World R02 $X_COL10 $Y_SDD1 $Z_COL10
+//:PLACE SDDBOX 3 World R02 $X_COL20 $Y_SDD2 $Z_COL20
+//:PLACE SDDBOX 4 World R03 $X_COL01 $Y_SDD0 $Z_COL01
+//:PLACE SDDBOX 5 World R03 $X_COL11 $Y_SDD1 $Z_COL11
+//:PLACE SDDBOX 6 World R03 $X_COL21 $Y_SDD2 $Z_COL21
+//:PLACE SDDBOX 7 World R04 $X_COL02 $Y_SDD0 $Z_COL02
+//:PLACE SDDBOX 8 World R04 $X_COL12 $Y_SDD1 $Z_COL12
+//:PLACE SDDBOX 9 World R04 $X_COL22 $Y_SDD2 $Z_COL22
+//:PLACE SDDBOX 10 World R05 $X_COL03 $Y_SDD0 $Z_COL03
+//:PLACE SDDBOX 11 World R05 $X_COL13 $Y_SDD1 $Z_COL13
+//:PLACE SDDBOX 12 World R05 $X_COL23 $Y_SDD2 $Z_COL23
+//:PLACE SDDBOX 13 World R06 $X_COL04 $Y_SDD0 $Z_COL04
+//:PLACE SDDBOX 14 World R06 $X_COL14 $Y_SDD1 $Z_COL14
+//:PLACE SDDBOX 15 World R06 $X_COL24 $Y_SDD2 $Z_COL24
+//:PLACE SDDBOX 16 World R07 $X_COL05 $Y_SDD0 $Z_COL05
+//:PLACE SDDBOX 17 World R07 $X_COL15 $Y_SDD1 $Z_COL15
+//:PLACE SDDBOX 18 World R07 $X_COL25 $Y_SDD2 $Z_COL25
+//:PLACE SDDBOX 19 World R08 $X_COL06 $Y_SDD0 $Z_COL06
+//:PLACE SDDBOX 20 World R08 $X_COL16 $Y_SDD1 $Z_COL16
+//:PLACE SDDBOX 21 World R08 $X_COL26 $Y_SDD2 $Z_COL26
+//:PLACE SDDBOX 22 World R09 $X_COL07 $Y_SDD0 $Z_COL07
+//:PLACE SDDBOX 23 World R09 $X_COL17 $Y_SDD1 $Z_COL17
+//:PLACE SDDBOX 24 World R09 $X_COL27 $Y_SDD2 $Z_COL27
+//:COLOUR "SDDBOX" 1. 1. 1. 0.
+
+//:VOLU SDDBASE BOX 0.5*$SDDBASE_X 0.5*$DY_SDD 0.5*$DZ_SDD G4_Al
+////:PLACE SDDBASE 1 SDDBOX R00 -0.5*$DX_SDD+0.5*$SDDBASE_X 0. 0.
+//:PLACE SDDBASE 1 SDDBOX R00 -0.5*$DX_SDDBOX+0.5*$SDDBASE_X 0. 0.
+//:COLOUR "SDDBASE" 1. 1. 1. 0.
+
+//:VOLU SDDSTRIPM BOX 0.5*$SDDSTRIPX 0.5*$SDDSTRIPY 0.5*$DZ_SDD-$SDDSTRIPY G4_Al
+////:PLACE SDDSTRIPM 1 SDDBOX R00  -0.5*$DX_SDD+$SDDBASE_X+0.5*$SDDSTRIPX 0. 0.
+//:PLACE SDDSTRIPM 1 SDDBOX R00  -0.5*$DX_SDDBOX+$SDDBASE_X+0.5*$SDDSTRIPX 0. 0.
+//:COLOUR "SDDSTRIPM" 1. 1. 1. 0.
+
+//:VOLU SDDSTRIPMB BOX 0.5*$SDDSTRIPX 0.5*$DY_SDD 0.5*$SDDSTRIPY G4_Al
+////:PLACE SDDSTRIPMB 1 SDDBOX R00  -0.5*$DX_SDD+$SDDBASE_X+0.5*$SDDSTRIPX 0.  0.5*$DZ_SDD-0.5*$SDDSTRIPY
+////:PLACE SDDSTRIPMB 2 SDDBOX R00  -0.5*$DX_SDD+$SDDBASE_X+0.5*$SDDSTRIPX 0. -0.5*$DZ_SDD+0.5*$SDDSTRIPY
+//:PLACE SDDSTRIPMB 1 SDDBOX R00  -0.5*$DX_SDDBOX+$SDDBASE_X+0.5*$SDDSTRIPX 0.  0.5*$DZ_SDD-0.5*$SDDSTRIPY
+//:PLACE SDDSTRIPMB 2 SDDBOX R00  -0.5*$DX_SDDBOX+$SDDBASE_X+0.5*$SDDSTRIPX 0. -0.5*$DZ_SDD+0.5*$SDDSTRIPY
+//:COLOUR "SDDSTRIPMB" 1. 1. 1. 0.
+
+//:VOLU SDDProtection BOX 0.5*$SDDcaseWidth 0.5*$DY_SDDBOX 0.5*$DZ_SDD  SID_Al
+////:PLACE SDDProtection 1 SDDBOX R00 0.5*$DX_SDD-0.5*$SDDcaseWidth 0. 0.
+//:PLACE SDDProtection 1 SDDBOX R00 -0.5*$DX_SDDBOX+$SDDBASE_X+$SDDSTRIPX+0.5*$SDDcaseWidth 0. 0.
+//:COLOUR "SDDProtection" 1. 1. 1. 0.
+
+//:VOLU SDDProtectionHole BOX 0.5*$SDDcaseWidth 0.5*(1.*cm+1.*mm) 0.5*(3.*1.*cm+1.*mm)  G4_Galactic
+////:PLACE SDDProtectionHole 1 SDDProtection R00 0. -0.5*0.5*$DY_SDD 0.
+////:PLACE SDDProtectionHole 2 SDDProtection R00 0.  0.5*0.5*$DY_SDD 0.
+//:PLACE SDDProtectionHole 1 SDDProtection R00 0. -0.5*(0.5*$DY_SDD-0.5*$SDDSTRIPY)-0.5*$SDDSTRIPY 0.
+//:PLACE SDDProtectionHole 2 SDDProtection R00 0.  0.5*(0.5*$DY_SDD-0.5*$SDDSTRIPY)+0.5*$SDDSTRIPY 0.
+//:COLOUR SDDProtectionHole 1. 0. 0. 0.
+
+////:VOLU SDDCeramic BOX 0.5*$SDDSTRIPX 0.5*(0.5*$DY_SDD-0.5*$SDDSTRIPY) 0.5*($DZ_SDD-2.*0.5*$SDDSTRIPY) SID_Ceramic
+//:VOLU SDDCeramic BOX 0.5*$SDDSTRIPX 0.5*(0.5*$DY_SDD-0.5*$SDDSTRIPY) 0.5*($DZ_SDD-2.*$SDDSTRIPY) SID_Ceramic
+////:PLACE SDDCeramic 1 SDDBOX R00 -0.5*$DX_SDD+$SDDBASE_X+0.5*$SDDSTRIPX  0.5*$SDDSTRIPY+0.5*(0.5*$DY_SDD-0.5*$SDDSTRIPY) 0.
+////:PLACE SDDCeramic 2 SDDBOX R00 -0.5*$DX_SDD+$SDDBASE_X+0.5*$SDDSTRIPX -0.5*$SDDSTRIPY-0.5*(0.5*$DY_SDD-0.5*$SDDSTRIPY) 0.
+//:PLACE SDDCeramic 1 SDDBOX R00 -0.5*$DX_SDDBOX+$SDDBASE_X+0.5*$SDDSTRIPX   0.5*$SDDSTRIPY+0.5*(0.5*$DY_SDD-0.5*$SDDSTRIPY) 0.
+//:PLACE SDDCeramic 2 SDDBOX R00 -0.5*$DX_SDDBOX+$SDDBASE_X+0.5*$SDDSTRIPX  -0.5*$SDDSTRIPY-0.5*(0.5*$DY_SDD-0.5*$SDDSTRIPY) 0.
+//:COLOUR SDDCeramic 0. 1. 0. 0.
+////:COLOUR SDDCeramic 1. 1. 1. 0.
+
+//:P dx_film 7*um
+//:VOLU SDDfilm BOX 0.5*$dx_film 0.5*$SDDY 0.5*$SDDZ  kapton // KAPTON ????
+////:PLACE SDDfilm 1 SDDCeramic R00  0.  0. 0.
+////:PLACE SDDfilm 2 SDDCeramic R00  0.  0. 1.*cm
+////:PLACE SDDfilm 3 SDDCeramic R00  0.  0. -1.*cm
+//:PLACE SDDfilm 1 SDDCeramic R00  0.5*$SDDSTRIPX-0.5*$dx_film  0. 0.
+//:PLACE SDDfilm 2 SDDCeramic R00  0.5*$SDDSTRIPX-0.5*$dx_film  0. 1.*cm
+//:PLACE SDDfilm 3 SDDCeramic R00  0.5*$SDDSTRIPX-0.5*$dx_film  0. -1.*cm
+////:PLACE SDDfilm 4 SDDCeramic R00  0.5*$SDDSTRIPX-0.5*$dx_film  0. 0.
+////:PLACE SDDfilm 5 SDDCeramic R00  0.5*$SDDSTRIPX-0.5*$dx_film  0. 1.*cm
+////:PLACE SDDfilm 6 SDDCeramic R00  0.5*$SDDSTRIPX-0.5*$dx_film  0. -1.*cm
+//:COLOUR "SDDfilm" 1. 0. 0. 0.
+
+//:VOLU SDD BOX 0.5*$SDDX 0.5*$SDDY 0.5*$SDDZ  Silicon
+////:PLACE SDD 1 SDDCeramic R00  0.  0. 0.
+////:PLACE SDD 2 SDDCeramic R00  0.  0. 1.*cm
+////:PLACE SDD 3 SDDCeramic R00  0.  0. -1.*cm
+//:PLACE SDD 1 SDDCeramic R00  0.5*$SDDSTRIPX-$dx_film-0.5*$SDDX  0. 0.
+//:PLACE SDD 2 SDDCeramic R00  0.5*$SDDSTRIPX-$dx_film-0.5*$SDDX  0. 1.*cm
+//:PLACE SDD 3 SDDCeramic R00  0.5*$SDDSTRIPX-$dx_film-0.5*$SDDX  0. -1.*cm
+////:PLACE SDD 4 SDDCeramic R00  0.5*$SDDSTRIPX-$dx_film-0.5*$SDDX  0. 0.
+////:PLACE SDD 5 SDDCeramic R00  0.5*$SDDSTRIPX-$dx_film-0.5*$SDDX  0. 1.*cm
+////:PLACE SDD 6 SDDCeramic R00  0.5*$SDDSTRIPX-$dx_film-0.5*$SDDX  0. -1.*cm
+//:COLOUR "SDD" 1. 0. 0.
+
+////:VOLU "Shielding1" BOX  0.5*50.*cm 0.5*33.*cm 0.5*4.9*cm G4_Pb
+////:VOLU "Shielding1" BOX  $HALF_X_SHIEL $HALF_Y_SHIEL $HALF_Z_SHIEL G4_Pb
+////:VOLU "Shielding1" TRD $HALF_X_SHIEL $HALF_X_SHIEL $HALF_Y_SHIEL1 $HALF_Y_SHIEL2 $HALF_Z_SHIEL  G4_Pb
+//:VOLU "Shielding1" TRD 0.5*$X_SHIEL 0.5*$X_SHIEL 0.5*$Y_SHIEL1 0.5*$Y_SHIEL2 0.5*$Z_SHIEL  G4_Pb
+////:PLACE "Shielding1" 1 World R01 0. 12.*cm 0.
+//:PLACE "Shielding1" 1 World R01 $VX1 $VY1 $VZ1
+//:COLOUR "Shielding1" 0.5 0.5 1. 0.
+//
+//:VOLU "Shielding2" TRAP $X_SHIEL $Z_SHIEL $L_SHIEL2 $L_SHIEL2-$DY_SH G4_Pb
+//:PLACE "Shielding2" 1 World R11 $VX4 $VY4 $VZ4
+//:COLOUR "Shielding2" 0.5 0.5 1. 0.
+//:VOLU "Shielding3" TRAP $X_SHIEL $Z_SHIEL $L_SHIEL2 $L_SHIEL2-$DY_SH G4_Pb
+//:PLACE "Shielding3" 1 World R12 $VX5 $VY5 $VZ5
+//:COLOUR "Shielding3" 0.5 0.5 1. 0.
+//
+////:P r1_hole 0.5*78.0*mm
+////:P r2_hole 0.5*90.0*mm
+////:P r1_hole_polyethylene 0.5*83.0*mm
+////:P r2_hole_polyethylene 0.5*95.0*mm
+////:P r1_hole_Al 0.5*93.0*mm
+////:P r2_hole_Al 0.5*105.0*mm
+////:P r1_hole_Cu 0.5*103.0*mm
+////:P r2_hole_Cu 0.5*115.0*mm
+//
+//:P r1_hole 0.5*53.0*mm
+//:P r2_hole 0.5*78.0*mm
+//:P r1_hole_polyethylene 0.5*57.0*mm
+//:P r2_hole_polyethylene 0.5*82.0*mm
+//:P r1_hole_Al 0.5*67.0*mm
+//:P r2_hole_Al 0.5*92.0*mm
+//:P r1_hole_Cu 0.5*77.0*mm
+//:P r2_hole_Cu 0.5*102.0*mm
+//
+////:VOLU "WINDOWSHIELD" CONS 0.*cm 4.*cm 0.*cm 5.*cm $HALF_Z_SHIEL 0. 360.*deg G4_AIR
+////:VOLU "WINDOWSHIELD" CONS 0.*cm 0.5*53.0*mm 0.*cm 0.5*78.0*mm $HALF_Z_SHIEL 0. 360.*deg G4_AIR
+//:VOLU "WINDOWSHIELD" CONS 0. $r1_hole 0. $r2_hole $HALF_Z_SHIEL 0. 360.*deg G4_AIR
+//:PLACE "WINDOWSHIELD" 1 "Shielding1" R00 0. 0. 0.
+////:COLOUR "WINDOWSHIELD" 0.6 0.2 0.5  0.
+//:COLOUR "WINDOWSHIELD" 1. 1. 0.
+//
+//
+////:VOLU "WINDOWSHIELD2" CONS 4.*cm 5.*cm 5.*cm 6.*cm $HALF_Z_SHIEL 0. 360.*deg G4_C
+////:VOLU "WINDOWSHIELD2" CONS 0.5*53.0*mm 0.5*53.0*mm+5.0*mm 0.5*78.0*mm 0.5*78.0*mm+5.0*mm $HALF_Z_SHIEL 0. 360.*deg G4_C
+//:VOLU "WINDOWSHIELD2" CONS $r1_hole $r1_hole_polyethylene $r2_hole $r2_hole_polyethylene $HALF_Z_SHIEL 0. 360.*deg Polyethylene
+//:PLACE "WINDOWSHIELD2" 1 "Shielding1" R00 0. 0. 0.
+////:COLOUR "WINDOWSHIELD2" 0.6 0.2 0.5  0.
+////:COLOUR "WINDOWSHIELD2" 0.5 0.5 1.  0.
+//:COLOUR "WINDOWSHIELD2" 0. 1. 0.
+//
+//:VOLU "WINDOWSHIELD3" CONS $r1_hole_polyethylene $r1_hole_Al $r2_hole_polyethylene $r2_hole_Al $HALF_Z_SHIEL 0. 360.*deg G4_Al
+//:PLACE "WINDOWSHIELD3" 1 "Shielding1" R00 0. 0. 0.
+//:COLOUR "WINDOWSHIELD3" 1. 0. 0.
+//
+//
+//:VOLU "WINDOWSHIELD4" CONS $r1_hole_Al $r1_hole_Cu $r2_hole_Al $r2_hole_Cu $HALF_Z_SHIEL 0. 360.*deg G4_Cu
+//:PLACE "WINDOWSHIELD4" 1 "Shielding1" R00 0. 0. 0.
+//:COLOUR "WINDOWSHIELD4" 0. 0. 1.
+//
+//
+////:P z_shiel_Al 50.0*mm
+//
+////:VOLU "ShieldAl" TRAP $X_SHIEL $z_shiel_Al $L_SHIEL2 $L_SHIEL2-$DY_SH G4_Al
+////:VOLU "Shielding1" TRD $HALF_X_SHIEL $HALF_X_SHIEL $HALF_Y_SHIEL1 $HALF_Y_SHIEL2 $HALF_Z_SHIEL  G4_Pb
+//:VOLU "ShieldAl" TRD $HALF_X_SHIEL $HALF_X_SHIEL $HALF_Y_SHIEL3 $HALF_Y_SHIEL1 0.5*$z_shiel_Al  G4_Al
+//:PLACE "ShieldAl" 1 World R01 $VX1 $VY1-0.5*$Z_SHIEL-0.5*$z_shiel_Al $VZ1
+//:COLOUR "ShieldAl" 0. 0. 1. 0.
+//
+//:VOLU Shield_AL_Hole TUBS 0. 7.0*cm 0.5*$z_shiel_Al 0. 360.*deg G4_AIR
+//:PLACE "Shield_AL_Hole" 1 ShieldAl R00 0. 0. 0.
+//:COLOUR "Shield_AL_Hole" 0. 0. 1. 0.
+//
+//:VOLU "ShieldAl2" TRAP $X_SHIEL $z_shiel_Al $L_SHIEL3 $L_SHIEL3-$DY_SH2 G4_Al
+//:PLACE "ShieldAl2" 1 World R11 $VX4Al $VY4Al $VZ4Al
+//:COLOUR "ShieldAl2" 0. 0. 1. 0.
+//
+//
+//:VOLU "ShieldAl3" TRAP $X_SHIEL $z_shiel_Al $L_SHIEL3 $L_SHIEL3-$DY_SH2 G4_Al
+//:PLACE "ShieldAl3" 1 World R12 $VX5Al $VY5Al $VZ5Al
+//:COLOUR "ShieldAl3" 0. 0. 1. 0.
+
+
+//:VOLU "Target" TUBS  0. $r_target 0.5*$dz_target 0.*deg 360.*deg SIDD_H
+//:PLACE "Target" 1 World R01 0. $pos_target 0.
+//:COLOUR "Target" 1. 0. 0. 0.
+
+//-------------
+////:P target_entrance_w 125.0*um
+:P target_entrance_w 100.0*um
+//:P target_cyl_w 50.0*um
+//
+////:VOLU Targetmaterialbase TUBS 0. $r_target+$target_cyl_w 0.5*$target_entrance_w 0. 360.*deg kapton
+//:VOLU Targetmaterialbase TUBS 0. $r_target+$target_cyl_w 0.5*$target_entrance_w 0. 360.*deg mylar
+//:PLACE Targetmaterialbase 1 World R01 0. $pos_target+0.5*$dz_target+0.5*$target_entrance_w 0.
+//:PLACE Targetmaterialbase 2 World R01 0. $pos_target-0.5*$dz_target-0.5*$target_entrance_w 0.
+//:COLOUR Targetmaterialbase 0. 1. 0. 0.
+
+//---------
+////:VOLU Targetmaterial TUBS $r_target $r_target+$target_cyl_w 0.5*$dz_target 0.*deg 360.*deg kapton
+//:VOLU Targetmaterial TUBS $r_target $r_target+$target_cyl_w 0.5*$dz_target 0.*deg 360.*deg mylar
+//:PLACE "Targetmaterial" 1 World R01 0. $pos_target 0.
+//:COLOUR Targetmaterial 1. 0. 0. 0.
+
+//-------------Titanium foil on the top of the target ------------ //
+////:P TiFoil_w 25.*um
+//:P TiFoil_w 200.*um
+//:VOLU TitaniumFoil TUBS  0.*cm 20.0*mm 0.5*$TiFoil_w 0.*deg 360.*deg SID_Ti
+//:PLACE TitaniumFoil 1 Target R00 0. 0. 0.5*$dz_target-0.5*$TiFoil_w 
+//:COLOUR TitaniumFoil 1. 0. 0. 0.
+
+//------------struttura_target
+:P target_al_top_w 5.0*mm
+:P target_al_bottom_w 5.0*mm
+//:P target_al_central_w 5.0*mm
+:P target_al_central_w 3.0*mm
+//:P target_al_top_r 80.0*mm
+//:P target_al_top_r 0.5*165.0*mm
+:P target_al_top_r $r_target+3.0*mm
+
+//:VOLU StrutturaTargetTop TUBS  0. $target_al_top_r 0.5*$target_al_top_w 0. 360.*deg G4_Al
+//:PLACE StrutturaTargetTop 1 World R01 0. $pos_target+0.5*$dz_target+$target_entrance_w+0.5*$target_al_top_w 0.
+//:COLOUR StrutturaTargetTop 0. 0. 1.
+
+////:VOLU StrutturaTargetBottom TUBS  6.5*cm $target_al_top_r 0.5*$target_al_bottom_w 0.*deg 360.*deg G4_Al
+//:VOLU StrutturaTargetBottom TUBS  0.5*112.0*mm $target_al_top_r 0.5*$target_al_bottom_w 0.*deg 360.*deg G4_Al
+//:PLACE StrutturaTargetBottom 1 World R01 0. $pos_target-0.5*$dz_target-$target_entrance_w-0.5*$target_al_bottom_w 0.
+//:COLOUR StrutturaTargetBottom 0. 0. 1.
+
+//---------dischi centrali
+
+//:P radio_c 2.5*mm
+:P radio_c 1.0*mm
+//:P disk_w 5.0*mm
+:P disk_w 2.*$radio_c
+:P disk_r1 $target_al_top_r-$disk_w
+:P pos_disk1 $pos_target-0.5*$dz_target+$dz_target/3.
+:P pos_disk2 $pos_target-0.5*$dz_target+2.*$dz_target/3.
+//:VOLU StruttTarget TUBS $disk_r1 $target_al_top_r 0.5*$target_al_central_w 0. 360.*deg G4_Al
+//:PLACE StruttTarget 1 World R01 0. $pos_disk1 0.
+//:PLACE StruttTarget 2 World R01 0. $pos_disk2 0.
+//:COLOUR StruttTarget 0. 0. 1. 0.
+
+//parametri barre verticali struttura_target
+
+:P X0_targ $target_al_top_r-$radio_c
+//:P X0_targ $target_al_top_r+$radio_c
+:P Y0_targ $dz_target
+:P Z0_targ 0.
+//:P theta_targ 2.*3.14/8.
+:P theta_targ 2.*3.141592/8.
+
+:P X1_targ cos($theta_targ)*$X0_targ
+:P Z1_targ -sin($theta_targ)*$X0_targ
+:P X2_targ cos($theta_targ)*$X1_targ+sin($theta_targ)*$Z1_targ
+:P Z2_targ -sin($theta_targ)*$X1_targ+cos($theta_targ)*$Z1_targ
+:P X3_targ cos($theta_targ)*$X2_targ+sin($theta_targ)*$Z2_targ
+:P Z3_targ -sin($theta_targ)*$X2_targ+cos($theta_targ)*$Z2_targ
+:P X4_targ cos($theta_targ)*$X3_targ+sin($theta_targ)*$Z3_targ
+:P Z4_targ -sin($theta_targ)*$X3_targ+cos($theta_targ)*$Z3_targ
+:P X5_targ cos($theta_targ)*$X4_targ+sin($theta_targ)*$Z4_targ
+:P Z5_targ -sin($theta_targ)*$X4_targ+cos($theta_targ)*$Z4_targ
+:P X6_targ cos($theta_targ)*$X5_targ+sin($theta_targ)*$Z5_targ
+:P Z6_targ -sin($theta_targ)*$X5_targ+cos($theta_targ)*$Z5_targ
+:P X7_targ cos($theta_targ)*$X6_targ+sin($theta_targ)*$Z6_targ
+:P Z7_targ -sin($theta_targ)*$X6_targ+cos($theta_targ)*$Z6_targ
+:P X8_targ cos($theta_targ)*$X7_targ+sin($theta_targ)*$Z7_targ
+:P Z8_targ -sin($theta_targ)*$X7_targ+cos($theta_targ)*$Z7_targ
+
+
+//-----------barre verticali
+
+//:VOLU StrutturaTargetLat TUBS 0. $radio_c 0.5*$dz_target 0. 360.*deg G4_Al
+//:PLACE StrutturaTargetLat 1 World R01 $X0_targ $pos_target 0.
+//:PLACE StrutturaTargetLat 2 World R01 $X1_targ $pos_target $Z1_targ
+//:PLACE StrutturaTargetLat 3 World R01 $X2_targ $pos_target $Z2_targ
+//:PLACE StrutturaTargetLat 4 World R01 $X3_targ $pos_target $Z3_targ
+//:PLACE StrutturaTargetLat 5 World R01 $X4_targ $pos_target $Z4_targ
+//:PLACE StrutturaTargetLat 6 World R01 $X5_targ $pos_target $Z5_targ
+//:PLACE StrutturaTargetLat 7 World R01 $X6_targ $pos_target $Z6_targ
+//:PLACE StrutturaTargetLat 8 World R01 $X7_targ $pos_target $Z7_targ
+//:COLOUR StrutturaTargetLat 0. 1. 0. 0.
+
+//:SOLID polyc POLYCONE 0 360 4
+//:SOLID polyc POLYCONE 0 360 4
+//-20.    30.  35.
+// 7.5  30.  35.
+// 10.    30.  37.5
+// 20.    30.  37.5
+
+
+//:SOLID polyc POLYHEDRA 0. 360.*deg 8 2
+// 0.5*164*mm 0.5*109.*mm 0.5*114.*mm
+//-0.5*164*mm 0.5*109.*mm 0.5*200.*mm
+//:VOLU polyc polyc G4_AIR
+//:PLACE polyc 1 World R00 0. 45.*cm 0.
+//:COLOUR polyc 0. 1. 0. 0.
+
+
+//:ROTM R99 0. 0.  1.5*360./8.*deg
+//:SOLID box BOX 25*cm 0.5*114*mm 25*cm
+//:VOLU box box G4_AIR
+//:PLACE box 1 World R99 0. 45.*cm 0.
+//:COLOUR box 1. 0. 0. 0.
+
+////:VOLU "SputnikCyl" TUBS  0.5*61.0*mm  0.5*102.0*mm 0.5*64.0*mm 0. 360.*deg G4_Pb
+////:VOLU "SputnikCyl" TUBS  0.5*61.0*mm  0.5*109.0*mm 0.5*64.0*mm 0. 360.*deg G4_Pb
+//:VOLU "SputnikCyl" TUBS  0.5*60.0*mm  0.5*108.0*mm 0.5*64.0*mm 0. 360.*deg G4_Pb
+//:PLACE "SputnikCyl" 1 World R00 0. 0. 151.24*mm+0.5*64.0*mm
+//:PLACE "SputnikCyl" 2 World R00 0. 0. -151.24*mm-0.5*64.0*mm
+//:COLOUR "SputnikCyl" 0. 1. 0. 0.
+
+//:VOLU "VCHCON" CONS $r1_vac_chamb $r2_vac_chamb $r3_vac_chamb $r4_vac_chamb 0.5*$dz_vac_chamb 0. 360.*deg G4_Al
+//:PLACE "VCHCON" 1 "World" R01 0. $pos_vac_chamb 0.
+//:COLOUR "VCHCON" 0. 1. 1. 1.
+
+
+//:VOLU CRYOSTAT_ENTRANCE TUBS $r1_entrance $r2_vac_chamb 0.5*$thikness_vac_chamb 0. 360.*deg G4_Al
+//:PLACE CRYOSTAT_ENTRANCE 1 World R01 0. $pos_vac_chamb-0.5*$dz_vac_chamb-0.5*$thikness_vac_chamb 0.
+//:COLOUR "CRYOSTAT_ENTRANCE" 0. 1. 1. 1.
+
+//:VOLU "VCHCON_teflon" CONS $r1_vac_chamb-$teflon_cone_w $r1_vac_chamb $r3_vac_chamb-$teflon_cone_w $r3_vac_chamb 0.5*$dz_vac_chamb 0. 360.*deg teflon
+//:PLACE "VCHCON_teflon" 1 "World" R01 0. $pos_vac_chamb 0.
+//:COLOUR "VCHCON_teflon" 1. 0. 1. 1.
+
+//:VOLU CRYOSTAT_ENTRANCE_teflon TUBS $r1_entrance $r1_vac_chamb-$teflon_cone_w 0.5*$teflon_cone_w 0. 360.*deg teflon
+//:PLACE CRYOSTAT_ENTRANCE_teflon 1 World R01 0. $pos_vac_chamb-0.5*$dz_vac_chamb+0.5*$teflon_cone_w 0.
+//:COLOUR "CRYOSTAT_ENTRANCE_teflon" 1. 0. 1. 1.
+
+
+//:VOLU CRYOSTAT_ENTRANCE_kapton TUBS 0. $r1_entrance 0.5*$cryo_ent_kapton_w 0. 360.*deg kapton
+////:PLACE CRYOSTAT_ENTRANCE_kapton 1 World R01 0. $pos_vac_chamb-0.5*$dz_vac_chamb-0.5*$cryo_ent_kapton_w 0.
+//:PLACE CRYOSTAT_ENTRANCE_kapton 1 World R01 0. $pos_vac_chamb-0.5*$dz_vac_chamb-0.5*$thikness_vac_chamb 0.
+//:COLOUR "CRYOSTAT_ENTRANCE_kapton" 1. 0. 0. 1.
+
+//:VOLU CRYOSTAT_cyl_teflon TUBS $r1_entrance-$teflon_cyl_w $r1_entrance 0.5*$cryo_cyl_teflon_z 0. 360.*deg teflon
+//:PLACE CRYOSTAT_cyl_teflon 1 World R01 0. $pos_vac_chamb-0.5*$dz_vac_chamb-0.5*$thikness_vac_chamb+0.5*$cryo_ent_kapton_w+0.5*$cryo_cyl_teflon_z 0.
+//:COLOUR "CRYOSTAT_cyl_teflon" 1. 0. 1. 1.
+
+//:VOLU CRYOSTAT_ENTRANCE3 TUBS $r2_entrance $r2_entrance+$thikness_entrance 0.5*$dz_cyl_entrance 0. 360.*deg paper
+//:PLACE CRYOSTAT_ENTRANCE3 1 World R01 0. $pos_vac_chamb-0.5*$dz_vac_chamb-2*0.5*$thikness_vac_chamb-0.5*$dz_cyl_entrance 0.
+//:COLOUR "CRYOSTAT_ENTRANCE3" 1. 0. 0. 1.
+
+//:VOLU CRYOSTAT_ENTRANCE4 TUBS 0.*cm $r2_entrance+$thikness_entrance 0.5*$thikness_entrance 0. 360.*deg paper
+//:PLACE CRYOSTAT_ENTRANCE4 1 World R01 0. $pos_vac_chamb-0.5*$dz_vac_chamb-2*0.5*$thikness_vac_chamb-2*0.5*$dz_cyl_entrance-0.5*$thikness_entrance 0.
+//:COLOUR "CRYOSTAT_ENTRANCE4" 0. 1. 0. 1.
+// Define WORLD
+
+:VOLU World BOX 85.*cm 85.*cm 150.*cm G4_AIR
+
+:CHECK_OVERLAPS * ON 0. 1. 0.

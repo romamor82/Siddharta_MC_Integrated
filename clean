@@ -1,0 +1,4 @@
+rm ./tmp/Linux-g++/Siddharta/*.*
+rm ./tmp/Linux-g++/Siddharta/exe/*.*
+rm ./bin/Linux-g++/*
+

@@ -1,0 +1,37 @@
+//SiddhartaSetupVersion 8
+SiddhartaSetupVersion 2020
+//z_ghost 36.
+z_ghost 140.
+
+dx_kmtop 120.
+dy_kmtop 120.
+z_kmtop 115.
+
+z_kplus -67.
+
+StoreTrajectory 1
+
+lowlimit 100.
+
+defaultCutValue 10.
+
+OldTarget 0
+
+Beam 1
+//Beam 2
+externalBeam 0
+backgroundType 2
+nbOfSeconds 1
+beamCurrent 5
+
+useDegFromCard 1
+degFromCard 475
+
+useGasFromCard 1
+atomicNumberOfTarget 2
+targetDensityAsLiquidFraction 1.4
+
+kaonBottomBoostShift 2
+// in cm. 
+kaonBottomVerticalShift 2
+// in cm. 
