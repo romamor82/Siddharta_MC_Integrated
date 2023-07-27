@@ -36,6 +36,12 @@ void SiddhartaLumiDetectorAntiboostSD::Initialize(G4HCofThisEvent* HCE)
     Y = -99999.;
     Z = -99999.;
     analysis->histo->ntuData.particleNameLMAntiboost[0] = '\0';
+    analysis->histo->ntuData.pdgcodeLMAntiboost = -1000000;
+    analysis->histo->ntuData.EnergyDepLMAntiboost = -1000000./eV;
+    analysis->histo->ntuData.TimeLMAntiboost = -1000000./ns;
+    analysis->histo->ntuData.XYZLMAntiboost[0] = -1000000./mm;
+    analysis->histo->ntuData.XYZLMAntiboost[1] = -1000000./mm;
+    analysis->histo->ntuData.XYZLMAntiboost[2] = -1000000./mm;
   }
 }
 
@@ -76,6 +82,19 @@ G4bool SiddhartaLumiDetectorAntiboostSD::ProcessHits(G4Step* aStep,G4TouchableHi
       analysis->histo->ntuData.XYZLMAntiboost[2] = Z/mm;
       analysis->histo->ntuData.EnergyDepLMAntiboost= sciEnergy/eV;
     }
+    if (aStep->GetTrack()->GetDynamicParticle()->GetPDGcode() == -321) // KAONS
+    {
+      G4cout << "K- in LumiAB " << (aStep->GetTrack()->GetKineticEnergy()) / eV << G4endl;
+      kaonCounter++;
+
+      if(kaonCounter == 1)
+        analysis->histo->ntuData.kaonKinELMAntiboost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the first kaon hit
+
+      analysis->histo->ntuData.lastkaonKinELMAntiboost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the last kaon hit
+      analysis->histo->ntuData.XYZLMAntiboostKaonstop[0] = X/mm;
+      analysis->histo->ntuData.XYZLMAntiboostKaonstop[1] = Y/mm;
+      analysis->histo->ntuData.XYZLMAntiboostKaonstop[2] = Z/mm;
+    }
   }
   return true;
 }
@@ -93,4 +112,5 @@ void SiddhartaLumiDetectorAntiboostSD::EndOfEvent(G4HCofThisEvent*)
     analysis->histo->ntuData.XYZLMAntiboost[2] = Z/mm;
     analysis->histo->ntuData.EnergyDepLMAntiboost = sciEnergy/eV;
   }
+  kaonCounter = 0;
 }

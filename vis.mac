@@ -1,0 +1,98 @@
+#
+# Macro file for the initialization phase of "Siddharta.cc"
+# when runing in interactive mode
+#
+# Sets some default verbose
+#
+/control/verbose 2
+/run/verbose 2
+#
+# Create a scene handler for a specific graphics system
+# (Edit the next line(s) to choose another graphics system)
+#
+/run/initialize
+/vis/open OGL 600x600-0+0
+#/vis/viewer/set/background white
+#/vis/open OGLSX
+#/vis/open OGLSQt 600x600-0+0
+#/vis/open OGLIQt 600x600-0+0
+#/vis/open DAWNFILE
+#/vis/open HepRepFile
+#/vis/open OGLSX
+#/vis/ogl/set/fade 1
+#/vis/ogl/set/displayHeadTime true
+#/control/alias timeRange 1
+#/control/loop movie.loop -{timeRange} 40 0.1
+
+#
+###/vis/open OGLSX
+###/vis/open OGLSXm
+####/vis/open HepRepXML
+#
+####/vis/open DAWNFILE
+#
+# draw scene
+#
+/vis/drawVolume
+#
+#/vis/viewer/set/viewpointThetaPhi 90 90 deg
+#/vis/viewer/zoom 1.2
+/vis/drawView 89 0 0 15 cm 4
+
+#
+# for drawing the tracks
+/vis/scene/add/trajectories smooth
+# (if too many tracks cause core dump => /tracking/storeTrajectory 0)
+# for drawing the hits, uncomment next line
+# /vis/scene/add/hits
+# (if you prefer refreshing each event, comment out next line)
+/vis/scene/endOfEventAction accumulate 1000
+
+# by vol
+#/vis/filtering/trajectories/create/originVolumeFilter
+#/vis/filtering/trajectories/originVolumeFilter-0/add MoTarget_Physical
+#/vis/filtering/trajectories/originVolumeFilter-0/add World
+
+## by charge
+##/vis/filtering/trajectories/create/chargeFilter
+##/vis/filtering/trajectories/chargeFilter-0/add gamma
+##/vis/filtering/trajectories/chargeFilter-0/add 0
+##/vis/filtering/trajectories/chargeFilter-0/add -1
+
+## by particle
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add gamma
+/vis/filtering/trajectories/particleFilter-0/add kaon-
+#/vis/filtering/trajectories/particleFilter-0/add pi-
+#/vis/filtering/trajectories/particleFilter-0/add pi+
+#/vis/filtering/trajectories/particleFilter-0/add mu+
+#/vis/filtering/trajectories/particleFilter-0/add mu+
+#/vis/filtering/trajectories/particleFilter-0/add kaon+
+/vis/filtering/trajectories/particleFilter-0/add e-
+
+##by Energy or other
+#/vis/filtering/trajectories/create/attributeFilter
+#/vis/filtering/trajectories/attributeFilter-0/setAttribute IMag
+#/vis/filtering/trajectories/attributeFilter-0/addInterval 1000 eV 20 keV
+#/vis/filtering/trajectories/attributeFilter-0/addInterval 1 keV 50 keV
+#/vis/filtering/trajectories/attributeFilter-0/addInterval 629999 eV 630001 eV
+#/vis/filtering/trajectories/attributeFilter-0/addInterval 2000 eV 20000 eV
+#/vis/filtering/trajectories/attributeFilter-0/addInterval 100 MeV 150 MeV
+
+##combine with drawing attribs, like:
+#/vis/modeling/trajectories/create/drawByAttribute
+#/vis/modeling/trajectories/drawByAttribute-0/setAttribute IMag
+#/vis/modeling/trajectories/drawByAttribute-0/addInterval interval1 5800 eV 6600 eV
+#/vis/modeling/trajectories/drawByAttribute-0/addInterval interval2 101 MeV 153 MeV
+#/vis/modeling/trajectories/drawByAttribute-0/interval1/setLineColour green
+#/vis/modeling/trajectories/drawByAttribute-0/interval2/setLineColour red
+#
+##by Momentum or other
+#/vis/filtering/trajectories/create/attributeFilter
+#/vis/filtering/trajectories/attributeFilter-0/setAttribute IMag
+#/vis/filtering/trajectories/attributeFilter-0/addInterval 5800 eV 6600 eV
+#/vis/filtering/trajectories/attributeFilter-0/addInterval 101 MeV 153 MeV
+#
+#/geometry/test/grid_test True
+#
+/run/beamOn 1

@@ -26,6 +26,7 @@ public:
 };
 
 const unsigned int MaxHits = 700;
+const unsigned int MaxCZTHits = 50;
 const unsigned int MaxAnti = 40;
 
 struct siddharta_t {
@@ -34,6 +35,8 @@ struct siddharta_t {
   double XYZstopKP[3];   //22.20.2021
   double VertexMomentum[3];
   int nHitSDD;
+  int nHitCZTAntiBoost;
+  int nHitCZTBoost;
   int NoSDD[MaxHits];
   int NbHitSDD[MaxHits];
   double EnergySDD[MaxHits];
@@ -69,11 +72,85 @@ struct siddharta_t {
   double TimeLMBoost;
   double EnergyDepLMBoost;
   double XYZLMBoost[3];
+  double XYZLMBoostKaonstop[3];
   char particleNameLMBoost[20];
+  int pdgcodeLMBoost;
+  double kaonKinELMBoost;
+  double lastkaonKinELMBoost;
   double TimeLMAntiboost;
   double EnergyDepLMAntiboost;
   double XYZLMAntiboost[3];
+  double XYZLMAntiboostKaonstop[3];
   char particleNameLMAntiboost[20];
+  int pdgcodeLMAntiboost;
+  double kaonKinELMAntiboost;
+  double lastkaonKinELMAntiboost;
+
+  double TimeKLDAntiBoost;
+  double EnergyDepKLDAntiBoost;
+  double kaonKinEKLDAntiBoost;
+  double lastkaonKinEKLDAntiBoost;
+  double XYZKLDAntiBoost[3];
+  double KLDAntiBooststop[3];
+  int pdgcodeKLDAntiBoost;
+
+  double TimeKLT1AntiBoost;
+  double EnergyDepKLT1AntiBoost;
+  double kaonKinEKLT1AntiBoost;
+  double lastkaonKinEKLT1AntiBoost;
+  double XYZKLT1AntiBoost[3];
+  double KLT1AntiBooststop[3];
+  double KLT1AntiBoostKaonstop[3];
+  int pdgcodeKLT1AntiBoost;
+
+  double TimeKLT2AntiBoost;
+  double EnergyDepKLT2AntiBoost;
+  double kaonKinEKLT2AntiBoost;
+  double lastkaonKinEKLT2AntiBoost;
+  double XYZKLT2AntiBoost[3];
+  double KLT2AntiBooststop[3];
+  double KLT2AntiBoostKaonstop[3];
+  int pdgcodeKLT2AntiBoost;
+
+  double TimeKLBWAntiBoost;
+  double EnergyDepKLBWAntiBoost;
+  double kaonKinEKLBWAntiBoost;
+  double lastkaonKinEKLBWAntiBoost;
+  double XYZKLBWAntiBoost[3];
+  double KLBWAntiBooststop[3];
+  int pdgcodeKLBWAntiBoost;
+
+  double TotalEnergyDepKLCZTAntiBoost;
+  double gammaKinEKLCZTAntiBoost;
+  double TimeKLCZTAntiBoost[MaxCZTHits];
+  double EnergyDepKLCZTAntiBoost[MaxCZTHits];
+  double kaonKinEKLCZTAntiBoost[MaxCZTHits];
+  double XYZKLCZTAntiBoost[3][MaxCZTHits];
+  int pdgcodeKLCZTAntiBoost[MaxCZTHits];
+
+  double TimeKLDBoost;
+  double EnergyDepKLDBoost;
+  double kaonKinEKLDBoost;
+  double lastkaonKinEKLDBoost;
+  double XYZKLDBoost[3];
+  double KLDBooststop[3];
+  int pdgcodeKLDBoost;
+
+  double TimeKLTBoost;
+  double EnergyDepKLTBoost;
+  double kaonKinEKLTBoost;
+  double lastkaonKinEKLTBoost;
+  double XYZKLTBoost[3];
+  double KLTBooststop[3];
+  int pdgcodeKLTBoost;
+
+  double TotalEnergyDepKLCZTBoost;
+  double gammaKinEKLCZTBoost;
+  double TimeKLCZTBoost[MaxCZTHits];
+  double EnergyDepKLCZTBoost[MaxCZTHits];
+  double kaonKinEKLCZTBoost[MaxCZTHits];
+  double XYZKLCZTBoost[3][MaxCZTHits];
+  int pdgcodeKLCZTBoost[MaxCZTHits];
 
   double TimeGhost;
   double XYZGhost[3];

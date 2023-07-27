@@ -36,6 +36,12 @@ void SiddhartaLumiDetectorBoostSD::Initialize(G4HCofThisEvent* HCE)
     Y = -99999. ;
     Z = -99999. ;
     analysis->histo->ntuData.particleNameLMBoost[0] = '\0';
+    analysis->histo->ntuData.pdgcodeLMBoost = -1000000;
+    analysis->histo->ntuData.EnergyDepLMBoost = -1000000./eV;
+    analysis->histo->ntuData.TimeLMBoost = -1000000./ns;
+    analysis->histo->ntuData.XYZLMBoost[0] = -1000000./mm;
+    analysis->histo->ntuData.XYZLMBoost[1] = -1000000./mm;
+    analysis->histo->ntuData.XYZLMBoost[2] = -1000000./mm;
   }
 }
 
@@ -69,12 +75,25 @@ G4bool SiddhartaLumiDetectorBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistor
       for (G4int i=0; i<ilen; i++) {
         analysis->histo->ntuData.particleNameLMBoost[i] = (pname.data())[i];
       }
+      analysis->histo->ntuData.pdgcodeLMBoost = aStep->GetTrack()->GetDynamicParticle()->GetPDGcode();
       analysis->histo->ntuData.particleNameLMBoost[ilen] = '\0';
       analysis->histo->ntuData.EnergyDepLMBoost = sciEnergy/eV;
       analysis->histo->ntuData.TimeLMBoost = TimeLMBoost/ns;
       analysis->histo->ntuData.XYZLMBoost[0] = X/mm;
       analysis->histo->ntuData.XYZLMBoost[1] = Y/mm;
       analysis->histo->ntuData.XYZLMBoost[2] = Z/mm;
+    }
+    if (aStep->GetTrack()->GetDynamicParticle()->GetPDGcode() == -321) // KAONS
+    {
+      kaonCounter++;
+
+      if (kaonCounter == 1)
+        analysis->histo->ntuData.kaonKinELMBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the first kaon hit
+
+      analysis->histo->ntuData.lastkaonKinELMBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the last kaon hit
+      analysis->histo->ntuData.XYZLMBoostKaonstop[0] = X/mm;
+      analysis->histo->ntuData.XYZLMBoostKaonstop[1] = Y/mm;
+      analysis->histo->ntuData.XYZLMBoostKaonstop[2] = Z/mm;
     }
   }
 
@@ -93,4 +112,5 @@ void SiddhartaLumiDetectorBoostSD::EndOfEvent(G4HCofThisEvent*)
     analysis->histo->ntuData.XYZLMBoost[1] = Y/mm;
     analysis->histo->ntuData.XYZLMBoost[2] = Z/mm;
   }
+  kaonCounter = 0;
 }

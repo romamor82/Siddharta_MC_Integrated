@@ -1,19 +1,18 @@
-#ifndef SiddhartaLumiDetectorBoostSD_h
-#define SiddhartaLumiDetectorBoostSD_h 1
+#ifndef KLIMAXTarget2AntiBoostSD_h
+#define KLIMAXTarget2AntiBoostSD_h 1
 
 #include "SiddhartaTrackerHit.h"
 
 #include <G4VSensitiveDetector.hh>
-#include <G4SystemOfUnits.hh>
 
 class G4Step;
 class G4HCofThisEvent;
 
-class SiddhartaLumiDetectorBoostSD : public G4VSensitiveDetector
+class KLIMAXTarget2AntiBoostSD : public G4VSensitiveDetector
 {
 public:
-  SiddhartaLumiDetectorBoostSD(G4String);
-  ~SiddhartaLumiDetectorBoostSD();
+  KLIMAXTarget2AntiBoostSD(G4String);
+  ~KLIMAXTarget2AntiBoostSD();
 
   void Initialize(G4HCofThisEvent*);
   G4bool ProcessHits(G4Step*, G4TouchableHistory*);
@@ -23,12 +22,14 @@ private:
   SiddhartaTrackerHitsCollection* trackerCollection;
   G4double sciEnergy;
   G4double sciEnergyMax;
-  G4double TimeLMBoost;
+  G4double TimeKLT2AntiBoost;
   G4double X;
   G4double Y;
   G4double Z;
 
   G4int kaonCounter;
+  G4double kaonKinE;
 };
 
 #endif
+
