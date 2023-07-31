@@ -60,6 +60,7 @@ void SiddhartaCard::Initialization()
   variables["densityAddCustomGradientDensity"] = 0; // in percent of liquid density
   variables["kaonBottomBoostShift"] = 0; // in cm
   variables["kaonBottomVerticalShift"] = 0; // in cm
+  variables["activeDetMode"]= 1; // 1 = SIDDHARTA, 2 = CZT, 3 = HPGE, 4 = All, 5 = SIDDHARTA&&CZT, 6 = SIDDHARTA&&HPGE, 7 = CZT&&HPGE					    
   customDensitiesStep.clear();
 }
 

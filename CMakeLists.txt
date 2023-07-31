@@ -35,7 +35,7 @@ endforeach()
 
 list(APPEND FOLDERS ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/lib)
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wunused-parameter ")
+set(CMAKE_CXX_FLAGS "-std=c++17 -Wunused-parameter ")
 
 ################################################################################
 ## Project version number
@@ -56,7 +56,7 @@ include(${Geant4_USE_FILE})
 find_package(ROOT REQUIRED)
 message(STATUS "ROOT version: ${ROOT_VERSION}")
 
-set(ROOT_CXX_FLAGS "-std=c++11 -Wunused-parameter")
+set(ROOT_CXX_FLAGS "-std=c++17 -Wunused-parameter")
 include(${ROOT_USE_FILE})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)

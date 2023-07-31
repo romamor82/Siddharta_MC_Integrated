@@ -1491,7 +1491,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
 /// KLIMAXTarget1AntiBoost
   G4double dx_target1_ab = 40*mm; //like in june-july 2023
   G4double dy_target1_ab = 43*mm; //like in june-july 2023
-  G4double kltarget1AntiBoost_z = 7*0.01*mm;  //toreplace_ab_target1//
+  G4double kltarget1AntiBoost_z = 0.7*mm;  //toreplace_ab_target1//
   G4double Lumi_Target1_distAntiBoost = 0*mm;
   G4double posx_kltarget1AntiBoost = posx_kldegAntiBoost - 0.5*kldegAntiBoost_z - Lumi_Target1_distAntiBoost- 0.5*kltarget1AntiBoost_z;
 
@@ -1516,7 +1516,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
 /// KLIMAXTarget2AntiBoost
   G4double dx_target2_ab = 40*mm; //like in june-july 2023
   G4double dy_target2_ab = 43*mm; //like in june-july 2023
-  G4double kltarget2AntiBoost_z = 7*0.01*mm;  //toreplace_ab_target2//
+  G4double kltarget2AntiBoost_z = 0.7*mm;  //toreplace_ab_target2//
   G4double Target1_Target2_distAntiBoost = 0*mm;
   G4double posx_kltarget2AntiBoost = posx_kltarget1AntiBoost - 0.5*kltarget1AntiBoost_z - Target1_Target2_distAntiBoost - 0.5*kltarget2AntiBoost_z;
 

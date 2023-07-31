@@ -206,51 +206,72 @@ void SiddhartaAnalysisManager::EndOfEvent(const G4Event* evt)
   G4int n_trajectories = 0;
   if (trajectoryContainer)
     n_trajectories = trajectoryContainer->entries();
+
+  
+  bool sddhit = false;
+  bool czthit = false;
+  bool hpgehit = false;
+
+  int ACTIVE_DET_ID = mycard->variables["activeDetMode"];
+
   if (histo->ntuData.nHitSDD > 0 || histo->ntuData.NbAnti > 0 || histo->ntuData.EnergyDepKMTop > 0
              || histo->ntuData.EnergyDepKMBottom > 0
              || histo->ntuData.EnergyDepLMAntiboost > 0
-             || histo->ntuData.EnergyDepLMBoost > 0
-             ) {
-    int Anti_size = 9;
-    if ( SiddhartaSetup == 2 || SiddhartaSetup == 6 )
-      Anti_size = 9;
-    if ( SiddhartaSetup == 7 || SiddhartaSetup == 8 || SiddhartaSetup == 2020 || SiddhartaSetup == 2023)
-      Anti_size = 17;
+             || histo->ntuData.EnergyDepLMBoost > 0) 
+  {
+	  int Anti_size = 9;
+	  if ( SiddhartaSetup == 2 || SiddhartaSetup == 6 )
+		  Anti_size = 9;
+	  if ( SiddhartaSetup == 7 || SiddhartaSetup == 8 || SiddhartaSetup == 2020 || SiddhartaSetup == 2023)
+		  Anti_size = 17;
 
-    G4String pname ="";
-    for (G4int j=0; j<histo->ntuData.nHitSDD; j++) {
-      for (G4int i=0; i<n_trajectories; i++) {
-        G4Trajectory* trj = (G4Trajectory*)(*(trajectoryContainer))[i];
-        pname = trj->GetParticleName();
-        int ilen = strlen(pname);
+	  G4String pname ="";
+	  for (G4int j=0; j<histo->ntuData.nHitSDD; j++) {
+		  for (G4int i=0; i<n_trajectories; i++) {
+			  G4Trajectory* trj = (G4Trajectory*)(*(trajectoryContainer))[i];
+			  pname = trj->GetParticleName();
+			  int ilen = strlen(pname);
 
-        if (trj->GetTrackID() == histo->ntuData.parentID[j]) {
-          for(G4int k=0; k<ilen; k++) {
-            histo->ntuData.parentName[j][k] = (pname.data())[k];
-          }
-          histo->ntuData.parentName[j][ilen] = '\0';
-        }
-      }
-    }
+			  if (trj->GetTrackID() == histo->ntuData.parentID[j]) {
+				  for(G4int k=0; k<ilen; k++) {
+					  histo->ntuData.parentName[j][k] = (pname.data())[k];
+				  }
+				  histo->ntuData.parentName[j][ilen] = '\0';
+			  }
+		  }
+	  }
 
-      for (G4int i=0;i<n_trajectories;i++) {
-        G4Trajectory* trj = (G4Trajectory*)(*(trajectoryContainer))[i];
-        pname = trj->GetParticleName();
-        int ilen = strlen(pname);
+	  for (G4int i=0;i<n_trajectories;i++) {
+		  G4Trajectory* trj = (G4Trajectory*)(*(trajectoryContainer))[i];
+		  pname = trj->GetParticleName();
+		  int ilen = strlen(pname);
 
-        for (G4int l=0;l<Anti_size;l++) {
-          if (trj->GetTrackID() == histo->ntuData.parentIDAnti[l]) {
-            for(G4int k=0;k<ilen;k++) {
-              histo->ntuData.parentNameAnti[l][k] = (pname.data())[k];
-            }
-            histo->ntuData.parentNameAnti[l][ilen] = '\0';
-          }
-        }
-      }
-  
+		  for (G4int l=0;l<Anti_size;l++) {
+			  if (trj->GetTrackID() == histo->ntuData.parentIDAnti[l]) {
+				  for(G4int k=0;k<ilen;k++) {
+					  histo->ntuData.parentNameAnti[l][k] = (pname.data())[k];
+				  }
+				  histo->ntuData.parentNameAnti[l][ilen] = '\0';
+			  }
+		  }
+	  }
 
-    histo->fillTuple("0");
+	  sddhit = true;
+
   }
+	  if((histo->ntuData.EnergyDepLMAntiboost>-1)||(histo->ntuData.EnergyDepKLDAntiBoost>0)||(histo->ntuData.EnergyDepKLT1AntiBoost>0)||(histo->ntuData.EnergyDepKLT2AntiBoost>0)||(histo->ntuData.EnergyDepKLBWAntiBoost>0)||(histo->ntuData.TotalEnergyDepKLCZTAntiBoost>0)) czthit = true;
+	  if((histo->ntuData.EnergyDepLMBoost>0)||(histo->ntuData.EnergyDepKLDBoost>0)||(histo->ntuData.EnergyDepKLTBoost>0)||(histo->ntuData.TotalEnergyDepKLCZTBoost>0)) hpgehit = true;
+
+switch(ACTIVE_DET_ID)
+{
+	case 1: if(sddhit) histo->fillTuple("0"); break;
+	case 2: if(czthit) histo->fillTuple("0"); break;
+	case 3: if(hpgehit) histo->fillTuple("0"); break;
+	case 4: if(sddhit||czthit||hpgehit) histo->fillTuple("0"); break;
+	case 5: if(sddhit||czthit) histo->fillTuple("0"); break;
+	case 6: if(sddhit||hpgehit) histo->fillTuple("0"); break;
+	case 7: if(czthit||hpgehit) histo->fillTuple("0"); break;
+}
 
   G4double cut1 = 10000.;
   G4double cut2 = 0.8;
