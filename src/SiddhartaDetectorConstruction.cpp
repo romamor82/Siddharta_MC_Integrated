@@ -1,4 +1,4 @@
-#include "../include/SiddhartaLumiDetectorAntiboostSD.h"
+#include "../include/SiddhartaLumiDetectorAntiBoostSD.h"
 #include "../include/SiddhartaKaonDetectorBottomSD.h"
 #include "../include/SiddhartaDetectorConstruction.h"
 #include "../include/SiddhartaLumiDetectorBoostSD.h"
@@ -25,7 +25,7 @@
 #include "../include/KLIMAXCZTAntiBoostSD.h"
 #include "../include/KLIMAXTargetBoostSD.h"
 #include "../include/KLIMAXDegBoostSD.h"
-#include "../include/KLIMAXCZTBoostSD.h"
+#include "../include/KLIMAXHPGeBoostSD.h"
 
 
 #include <G4PhysicalConstants.hh>
@@ -61,7 +61,7 @@ SiddhartaDetectorConstruction::SiddhartaDetectorConstruction() : solidWorld(0), 
                         solidKaonDetectorTop(0), logicKaonDetectorTop(0), physiKaonDetectorTop(0),
                         solidKaonDetectorBottom(0), logicKaonDetectorBottom(0), physiKaonDetectorBottom(0),
                         solidLumiDetectorBoost(0), logicLumiDetectorBoost(0), physiLumiDetectorBoost(0),
-                        solidLumiDetectorAntiboost(0), logicLumiDetectorAntiboost(0), physiLumiDetectorAntiboost(0),
+                        solidLumiDetectorAntiBoost(0), logicLumiDetectorAntiBoost(0), physiLumiDetectorAntiBoost(0),
                         solidKLIMAXDegAntiBoost(0),logicKLIMAXDegAntiBoost(0),physiKLIMAXDegAntiBoost(0),
                         solidKLIMAXTarget1AntiBoost(0),logicKLIMAXTarget1AntiBoost(0),physiKLIMAXTarget1AntiBoost(0),
                         solidKLIMAXTarget2AntiBoost(0),logicKLIMAXTarget2AntiBoost(0),physiKLIMAXTarget2AntiBoost(0),
@@ -69,7 +69,7 @@ SiddhartaDetectorConstruction::SiddhartaDetectorConstruction() : solidWorld(0), 
                         solidKLIMAXCZTAntiBoost(0),logicKLIMAXCZTAntiBoost(0),physiKLIMAXCZTAntiBoost(0),
                         solidKLIMAXDegBoost(0),logicKLIMAXDegBoost(0),physiKLIMAXDegBoost(0),
                         solidKLIMAXTargetBoost(0),logicKLIMAXTargetBoost(0),physiKLIMAXTargetBoost(0),
-                        solidKLIMAXCZTBoost(0),logicKLIMAXCZTBoost(0),physiKLIMAXCZTBoost(0),
+                        solidKLIMAXHPGeBoost(0),logicKLIMAXHPGeBoost(0),physiKLIMAXHPGeBoost(0),
                         solidKPlusDetector(0), logicKPlusDetector(0), physiKPlusDetector(0),
                         solidDegrader(0), logicDegrader(0), physiDegrader(0), TargetMater(0), BeamPipeMater(0),
                         KaonDetectorTopMater(0), KaonDetectorBottomMater(0), KPlusDetectorMater(0), DegraderMater(0),
@@ -158,6 +158,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   G4Element* Cd = new G4Element("Cadmium", "Cd", z=48., a= 112.411*g/mole);
   G4Element* Te = new G4Element("Tellurium", "Te", z=52., a= 127.60*g/mole);
   G4Element* Sm = new G4Element("Samarium","Sm", z=62., a=150.36*g/mole);
+  G4Element* Ge = new G4Element("Germaniuìum","Ge", z=32., a=72.64*g/mole);
 
   G4Material* Al = new G4Material("Al", z=13., a=26.981539*g/mole, density=2.7*g/cm3);
   G4Material* Silicon = new G4Material("Silicon", z=14., a=28.0855*g/mole, density=2.3290*g/cm3);
@@ -334,6 +335,9 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   CZT->AddElement(Zn, 5*perCent);
   CZT->AddElement(Te, 50*perCent);
 
+  G4Material* HPGe = new G4Material("HPGe", density= 5.323*g/cm3,nel=1); // beware that density is at room temperature
+  HPGe->AddElement(Ge, 1);
+  
   G4MaterialTable matTable = *(G4Material::GetMaterialTable());
   analysis->histo->addMatIDFromString("G4_AIR");
   analysis->histo->addMatIDFromString("G4_Galactic");
@@ -358,6 +362,10 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   rmY90->rotateY(phi);
   G4RotationMatrix* rm20 = new G4RotationMatrix(); // Double definition of the same rotation
   rm20->rotateX(phi);
+  G4RotationMatrix* rmXYZ90 = new G4RotationMatrix();
+  rmXYZ90->rotateY(phi);
+  rmXYZ90->rotateZ(phi);
+  rmXYZ90->rotateX(phi);
 //~Pi/2
 //Rotations by Pi
   phi = 180.*deg;
@@ -503,10 +511,10 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   SDman->AddNewDetector(LDBoost_SD);
   G4LogicalVolume* sciBoost = G4tgbVolumeMgr::GetInstance()->FindG4LogVol("LumiDetectorBoost",0);
 
-  G4String LumiDetectorAntiboost_SDname = "TextGeom/LumiDetectorAntiboost_SD";
-  SiddhartaLumiDetectorAntiboostSD* LDAntiboost_SD = new SiddhartaLumiDetectorAntiboostSD(LumiDetectorAntiboost_SDname);
-  SDman->AddNewDetector(LDAntiboost_SD);
-  G4LogicalVolume* sciAntiboost = G4tgbVolumeMgr::GetInstance()->FindG4LogVol("LumiDetectorAntiboost",0);
+  G4String LumiDetectorAntiBoost_SDname = "TextGeom/LumiDetectorAntiBoost_SD";
+  SiddhartaLumiDetectorAntiBoostSD* LDAntiBoost_SD = new SiddhartaLumiDetectorAntiBoostSD(LumiDetectorAntiBoost_SDname);
+  SDman->AddNewDetector(LDAntiBoost_SD);
+  G4LogicalVolume* sciAntiBoost = G4tgbVolumeMgr::GetInstance()->FindG4LogVol("LumiDetectorAntiBoost",0);
 
   G4String KLIMAXDegAntiBoost_SDname = "TextGeom/KLIMAXDegAntiBoost_SD";
   KLIMAXDegAntiBoostSD* KLDAntiBoost_SD = new KLIMAXDegAntiBoostSD( KLIMAXDegAntiBoost_SDname );
@@ -543,10 +551,10 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   SDman->AddNewDetector( KLTBoost_SD );
   G4LogicalVolume* kltBoost = G4tgbVolumeMgr::GetInstance()->FindG4LogVol("KLIMAXTargetBoost",0);
 
-  G4String KLIMAXCZTBoost_SDname = "TextGeom/KLIMAXCZTBoost_SD";
-  KLIMAXCZTBoostSD* KLCZTBoost_SD = new KLIMAXCZTBoostSD( KLIMAXCZTBoost_SDname );
-  SDman->AddNewDetector( KLCZTBoost_SD );
-  G4LogicalVolume* klcztBoost = G4tgbVolumeMgr::GetInstance()->FindG4LogVol("KLIMAXCZTBoost",0);
+  G4String KLIMAXHPGeBoost_SDname = "TextGeom/KLIMAXHPGeBoost_SD";
+  KLIMAXHPGeBoostSD* KLHPGeBoost_SD = new KLIMAXHPGeBoostSD( KLIMAXHPGeBoost_SDname );
+  SDman->AddNewDetector( KLHPGeBoost_SD );
+  G4LogicalVolume* klHPGeBoost = G4tgbVolumeMgr::GetInstance()->FindG4LogVol("KLIMAXHPGeBoost",0);
 
   G4String ghost_SDname = "TextGeom/ghost_SD";
   SiddhartaGhostSD* ghostSD = new SiddhartaGhostSD(ghost_SDname);
@@ -1443,42 +1451,42 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
 
 ///////////////////////////////////////////
 /// luminometer anti-boost side
-  G4Box* solidLumiDetectorAntiboost = new G4Box("LumiDetectorAntiboost", 0.5*dx_lumi, 0.5*dy_lumi, 0.5*dz_lumi);
-  G4LogicalVolume* logicLumiDetectorAntiboost = new G4LogicalVolume(solidLumiDetectorAntiboost, BC420, "World", 0, 0, 0);
-  G4VPhysicalVolume* physiLumiDetectorAntiboost = new G4PVPlacement(rmY90, G4ThreeVector(-posx_lumi_anti,0.,0.),
-                                                                    logicLumiDetectorAntiboost, "LumiDetectorAntiboost", World, false, 0);
-  logicLumiDetectorAntiboost->SetVisAttributes(G4Colour(0.,1.,0.));
+  G4Box* solidLumiDetectorAntiBoost = new G4Box("LumiDetectorAntiBoost", 0.5*dx_lumi, 0.5*dy_lumi, 0.5*dz_lumi);
+  G4LogicalVolume* logicLumiDetectorAntiBoost = new G4LogicalVolume(solidLumiDetectorAntiBoost, BC420, "World", 0, 0, 0);
+  G4VPhysicalVolume* physiLumiDetectorAntiBoost = new G4PVPlacement(rmY90, G4ThreeVector(-posx_lumi_anti,0.,0.),
+                                                                    logicLumiDetectorAntiBoost, "LumiDetectorAntiBoost", World, false, 0);
+  logicLumiDetectorAntiBoost->SetVisAttributes(G4Colour(0.,1.,0.));
 
 // Alumi in Aluminized Mylar, overall 15 micron
-  G4Box* solidLumiDetectorAntiboostAl = new G4Box("LumiDetectorAntiboostAl", 0.5*lumi_al_dx, 0.5*lumi_al_dy, 0.5*lumi_al_dz);
-  G4LogicalVolume* logicLumiDetectorAntiboostAl = new G4LogicalVolume(solidLumiDetectorAntiboostAl, Al, "World", 0, 0, 0);
-  G4VPhysicalVolume* physiLumiDetectorAntiboostAl = new G4PVPlacement(rmY90, G4ThreeVector(-posx_lumi_anti + 0.5*dz_lumi + 0.5*lumi_al_dz,0.,0.),
-                                                                      logicLumiDetectorAntiboostAl, "LumiDetectorAntiboostAl", World, false, 0);
-  physiLumiDetectorAntiboostAl = new G4PVPlacement(rmY90,G4ThreeVector(-posx_lumi_anti - 0.5*dz_lumi - 0.5*lumi_al_dz,0.,0.),
-                                                   logicLumiDetectorAntiboostAl, "LumiDetectorAntiboostAl", World, false, 1);
-  logicLumiDetectorAntiboostAl->SetVisAttributes(G4Colour(1.,1.,0.));
+  G4Box* solidLumiDetectorAntiBoostAl = new G4Box("LumiDetectorAntiBoostAl", 0.5*lumi_al_dx, 0.5*lumi_al_dy, 0.5*lumi_al_dz);
+  G4LogicalVolume* logicLumiDetectorAntiBoostAl = new G4LogicalVolume(solidLumiDetectorAntiBoostAl, Al, "World", 0, 0, 0);
+  G4VPhysicalVolume* physiLumiDetectorAntiBoostAl = new G4PVPlacement(rmY90, G4ThreeVector(-posx_lumi_anti + 0.5*dz_lumi + 0.5*lumi_al_dz,0.,0.),
+                                                                      logicLumiDetectorAntiBoostAl, "LumiDetectorAntiBoostAl", World, false, 0);
+  physiLumiDetectorAntiBoostAl = new G4PVPlacement(rmY90,G4ThreeVector(-posx_lumi_anti - 0.5*dz_lumi - 0.5*lumi_al_dz,0.,0.),
+                                                   logicLumiDetectorAntiBoostAl, "LumiDetectorAntiBoostAl", World, false, 1);
+  logicLumiDetectorAntiBoostAl->SetVisAttributes(G4Colour(1.,1.,0.));
 
 // Mylar in Aluminized Mylar
-  G4Box* solidLumiDetectorAntiboostMy = new G4Box("LumiDetectorAntiboostMy", 0.5*lumi_my_dx, 0.5*lumi_my_dy, 0.5*lumi_my_dz );
-  G4LogicalVolume* logicLumiDetectorAntiboostMy = new G4LogicalVolume(solidLumiDetectorAntiboostMy, mylar, "World", 0, 0, 0);
-  G4VPhysicalVolume* physiLumiDetectorAntiboostMy =
+  G4Box* solidLumiDetectorAntiBoostMy = new G4Box("LumiDetectorAntiBoostMy", 0.5*lumi_my_dx, 0.5*lumi_my_dy, 0.5*lumi_my_dz );
+  G4LogicalVolume* logicLumiDetectorAntiBoostMy = new G4LogicalVolume(solidLumiDetectorAntiBoostMy, mylar, "World", 0, 0, 0);
+  G4VPhysicalVolume* physiLumiDetectorAntiBoostMy =
                                         new G4PVPlacement(rmY90, G4ThreeVector(-posx_lumi_anti + 0.5*dz_lumi + lumi_al_dz + 0.5*lumi_my_dz,0.,0.),
-                                                          logicLumiDetectorAntiboostMy, "LumiDetectorAntiboostMy", World, false, 0);
-  physiLumiDetectorAntiboostMy = new G4PVPlacement(rmY90, G4ThreeVector(-posx_lumi_anti - 0.5*dz_lumi - lumi_al_dz - 0.5*lumi_my_dz,0.,0.),
-                                                   logicLumiDetectorAntiboostMy, "LumiDetectorAntiboostMy", World, false, 1);
-  logicLumiDetectorAntiboostMy->SetVisAttributes(G4Colour(1.,1.,0.));
+                                                          logicLumiDetectorAntiBoostMy, "LumiDetectorAntiBoostMy", World, false, 0);
+  physiLumiDetectorAntiBoostMy = new G4PVPlacement(rmY90, G4ThreeVector(-posx_lumi_anti - 0.5*dz_lumi - lumi_al_dz - 0.5*lumi_my_dz,0.,0.),
+                                                   logicLumiDetectorAntiBoostMy, "LumiDetectorAntiBoostMy", World, false, 1);
+  logicLumiDetectorAntiBoostMy->SetVisAttributes(G4Colour(1.,1.,0.));
 
 // Pokalon - Polycarbonate?
-  G4Box* solidLumiDetectorAntiboostPC = new G4Box("LumiDetectorAntiboostPC", 0.5*lumi_pc_dx, 0.5*lumi_pc_dy, 0.5*lumi_pc_dz );
-  G4LogicalVolume* logicLumiDetectorAntiboostPC = new G4LogicalVolume(solidLumiDetectorAntiboostPC, kapton, "World", 0, 0, 0);
-  G4VPhysicalVolume* physiLumiDetectorAntiboostPC =
+  G4Box* solidLumiDetectorAntiBoostPC = new G4Box("LumiDetectorAntiBoostPC", 0.5*lumi_pc_dx, 0.5*lumi_pc_dy, 0.5*lumi_pc_dz );
+  G4LogicalVolume* logicLumiDetectorAntiBoostPC = new G4LogicalVolume(solidLumiDetectorAntiBoostPC, kapton, "World", 0, 0, 0);
+  G4VPhysicalVolume* physiLumiDetectorAntiBoostPC =
                             new G4PVPlacement(rmY90, G4ThreeVector(-posx_lumi_anti + 0.5*dz_lumi + lumi_al_dz + lumi_my_dz + 0.5*lumi_pc_dz,0.,0.),
-                            logicLumiDetectorAntiboostPC, "LumiDetectorAntiboostPC", World, false, 0);
-  physiLumiDetectorAntiboostPC =
+                            logicLumiDetectorAntiBoostPC, "LumiDetectorAntiBoostPC", World, false, 0);
+  physiLumiDetectorAntiBoostPC =
                                 new G4PVPlacement(rmY90,G4ThreeVector(-posx_lumi_anti - 0.5*dz_lumi - lumi_al_dz - lumi_my_dz - 0.5*lumi_pc_dz,0.,0.),
-                                                  logicLumiDetectorAntiboostPC, "LumiDetectorAntiboostPC", World, false, 1);
-  logicLumiDetectorAntiboostPC->SetVisAttributes(G4Colour(1.,1.,0.));
-  logicLumiDetectorAntiboost->SetSensitiveDetector(LDAntiboost_SD);
+                                                  logicLumiDetectorAntiBoostPC, "LumiDetectorAntiBoostPC", World, false, 1);
+  logicLumiDetectorAntiBoostPC->SetVisAttributes(G4Colour(1.,1.,0.));
+  logicLumiDetectorAntiBoost->SetSensitiveDetector(LDAntiBoost_SD);
 
 ////////////////////////////////
 /// KLIMAX AntiBoost PART
@@ -1491,7 +1499,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
 /// KLIMAXTarget1AntiBoost
   G4double dx_target1_ab = 40*mm; //like in june-july 2023
   G4double dy_target1_ab = 43*mm; //like in june-july 2023
-  G4double kltarget1AntiBoost_z = 0.7*mm;  //toreplace_ab_target1//
+  G4double kltarget1AntiBoost_z = 0.07*mm;  //toreplace_ab_target1//
   G4double Lumi_Target1_distAntiBoost = 0*mm;
   G4double posx_kltarget1AntiBoost = posx_kldegAntiBoost - 0.5*kldegAntiBoost_z - Lumi_Target1_distAntiBoost- 0.5*kltarget1AntiBoost_z;
 
@@ -1516,7 +1524,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
 /// KLIMAXTarget2AntiBoost
   G4double dx_target2_ab = 40*mm; //like in june-july 2023
   G4double dy_target2_ab = 43*mm; //like in june-july 2023
-  G4double kltarget2AntiBoost_z = 0.7*mm;  //toreplace_ab_target2//
+  G4double kltarget2AntiBoost_z = 0.1*mm;  //toreplace_ab_target2//
   G4double Target1_Target2_distAntiBoost = 0*mm;
   G4double posx_kltarget2AntiBoost = posx_kltarget1AntiBoost - 0.5*kltarget1AntiBoost_z - Target1_Target2_distAntiBoost - 0.5*kltarget2AntiBoost_z;
 
@@ -1544,7 +1552,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   G4double klboxwindowAntiBoost_z = 0.27*mm;  //toreplace_ab_boxwindow//
   //klboxwindowAntiBoost_z += 0.2*mm; // Al box entrance window
 
-  G4double posx_klboxwindowAntiBoost = -210*mm - 0.5*klboxwindowAntiBoost_z;
+  G4double posx_klboxwindowAntiBoost = -215*mm - 0.5*klboxwindowAntiBoost_z;
 
   G4Box* solidKLIMAXBoxWindowAntiBoost = new G4Box("KLIMAXBoxWindowAntiBoost", 0.5*dx_boxwindow_ab, 0.5*dy_boxwindow_ab, 0.5*klboxwindowAntiBoost_z);
   G4LogicalVolume* logicKLIMAXBoxWindowAntiBoost = new G4LogicalVolume(solidKLIMAXBoxWindowAntiBoost, Al, "World", 0, 0, 0);
@@ -1585,18 +1593,18 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   G4double klcztShieldingAntiBoost_x = 50.*mm;
   G4double klcztShieldingAntiBoost_y = 100.*mm;
   G4double klcztShieldingAntiBoost_z = 200.*mm;
-  G4double KLCZTShieldAB1_y = 0.*mm;
-
-  G4double KLCZTShieldAB1_x = posx_klboxwindowAntiBoost - 0.5*klboxwindowAntiBoost_z - 0.5*klcztShieldingAntiBoost_z;
-  G4double KLCZTShieldAB1_z = 0.5*klcztAntiBoost_x + 0.5*klcztShieldingAntiBoost_x + klcztBoxShieldingDistance;
+ 
+  G4double posy_KLCZTShieldAB12 = 0.*mm;
+  G4double posx_KLCZTShieldAB12 = posx_klboxwindowAntiBoost - 0.5*klboxwindowAntiBoost_z - 0.5*klcztShieldingAntiBoost_z;
+  G4double posz_KLCZTShieldAB12 = 0.5*klcztAntiBoost_x + 0.5*klcztShieldingAntiBoost_x + klcztBoxShieldingDistance;
 
   G4Box* solidKLIMAXCZTShieldingAntiBoost = new G4Box("KLIMAXCZTShieldingAntiBoost", 0.5*klcztShieldingAntiBoost_x,
                                                       0.5*klcztShieldingAntiBoost_y, 0.5*klcztShieldingAntiBoost_z);
   G4LogicalVolume* logicKLIMAXCZTShieldingAntiBoost = new G4LogicalVolume(solidKLIMAXCZTShieldingAntiBoost, Pb, "World", 0, 0, 0);
-  G4VPhysicalVolume* physiKLIMAXCZTShieldingAntiBoost1 = new G4PVPlacement(rmY90, G4ThreeVector(KLCZTShieldAB1_x, KLCZTShieldAB1_y, KLCZTShieldAB1_z),
+  G4VPhysicalVolume* physiKLIMAXCZTShieldingAntiBoost1 = new G4PVPlacement(rmY90, G4ThreeVector(posx_KLCZTShieldAB12, posy_KLCZTShieldAB12, posz_KLCZTShieldAB12),
                                                                            logicKLIMAXCZTShieldingAntiBoost, "KLIMAXCZTShieldingAntiBoost1",
                                                                            World, false, 0, true);
-  G4VPhysicalVolume* physiKLIMAXCZTShieldingAntiBoost2 = new G4PVPlacement(rmY90, G4ThreeVector(KLCZTShieldAB1_x, KLCZTShieldAB1_y, -KLCZTShieldAB1_z),
+  G4VPhysicalVolume* physiKLIMAXCZTShieldingAntiBoost2 = new G4PVPlacement(rmY90, G4ThreeVector(posx_KLCZTShieldAB12, posy_KLCZTShieldAB12, -posz_KLCZTShieldAB12),
                                                                            logicKLIMAXCZTShieldingAntiBoost, "KLIMAXCZTShieldingAntiBoost2",
                                                                            World, false, 0, true);
   logicKLIMAXCZTShieldingAntiBoost->SetVisAttributes(G4Colour(0.5,0.5,0.5));
@@ -1606,26 +1614,14 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
 ////////////////////////////////
 
 /// KLIMAXDegBoost
-  G4double kldegBoost_z = 0.001*mm;  //toreplace_b_deg//
-
+  G4double kldegBoost_z = 0.;  //toreplace_b_deg//
   G4double posx_kldegBoost = posx_lumi_boost + 0.5*dz_lumi + lumi_al_dz + lumi_my_dz + lumi_pc_dz + 0.5*kldegBoost_z;
 
-  G4Box* solidKLIMAXDegBoost = new G4Box("KLIMAXDegBoost", 0.5*dx_lumi, 0.5*dy_lumi, 0.5*kldegBoost_z);
-  G4LogicalVolume* logicKLIMAXDegBoost = new G4LogicalVolume(solidKLIMAXDegBoost, mylar, "World", 0, 0, 0);
-  G4VPhysicalVolume* physiKLIMAXDegBoost = new G4PVPlacement(rmY90, G4ThreeVector(posx_kldegBoost, 0., 0.),
-                                                             logicKLIMAXDegBoost, "KLIMAXDegBoost", World, false, 0, true);
-  logicKLIMAXDegBoost->SetVisAttributes(G4Colour(0.,0.,1.));
-  logicKLIMAXDegBoost->SetSensitiveDetector(KLDBoost_SD);
-
-  G4cout << "DEGRADER X: " << posx_kldegBoost - 0.5*kldegBoost_z << " " << posx_kldegBoost << " " << posx_kldegBoost + 0.5*kldegBoost_z << G4endl;
-  G4cout << "DEGRADER Y: " << -0.5*dy_lumi << " " << 0. << " " << 0.5*dy_lumi << G4endl;
-  G4cout << "DEGRADER Z: " << -0.5*dx_lumi << " " << 0. << " " << 0.5*dx_lumi << G4endl;
-
-/// KLIMAXTargetBoost
+  /// KLIMAXTargetBoost
   G4double dx_target_b = dx_lumi;
   G4double dy_target_b = dz_lumi;
-  G4double kltargetBoost_z = 1*mm;  //toreplace_b_target//
-  G4double Lumi_Target_distBoost = 0.5*mm;
+  G4double kltargetBoost_z = 5*mm;  //toreplace_b_target//
+  G4double Lumi_Target_distBoost = 0.;
 
   G4double posx_kltargetBoost = posx_kldegBoost + 0.5*kldegBoost_z + Lumi_Target_distBoost + 0.5*kltargetBoost_z;
 
@@ -1640,24 +1636,60 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   G4cout << "TARGET Y: " << -0.5*dy_lumi << " " << 0. << " " << 0.5*dy_lumi << G4endl;
   G4cout << "TARGET Z: " << -0.5*dx_lumi << " " << 0. << " " << 0.5*dx_lumi << G4endl;
 
-/// KLIMAXCZTBoost
-  G4double klcztBoost_x = 15*2*mm;
-  G4double klcztBoost_y = 13*2*mm;
-  G4double klcztBoost_z = 5.*mm;
-  G4double CZT_Target_distBoost = 10.*mm;
+/// KLIMAXHPGeBoost
 
-  G4double posx_klcztBoost = posx_kltargetBoost + 0.5*kltargetBoost_z + CZT_Target_distBoost+ 0.5*klcztBoost_z;
 
-  G4Box* solidKLIMAXCZTBoost = new G4Box("KLIMAXCZTBoost", 0.5*klcztBoost_x, 0.5*klcztBoost_y, 0.5*klcztBoost_z);
-  G4LogicalVolume* logicKLIMAXCZTBoost = new G4LogicalVolume(solidKLIMAXCZTBoost, CZT, "World", 0, 0, 0);
-  G4VPhysicalVolume* physiKLIMAXCZTBoost = new G4PVPlacement(rmY90, G4ThreeVector(posx_klcztBoost, 0., 0.),
-                                                             logicKLIMAXCZTBoost, "KLIMAXCZTBoost", World, false, 0, true);
-  logicKLIMAXCZTBoost->SetVisAttributes(G4Colour(0.,1.,1.));
-  logicKLIMAXCZTBoost->SetSensitiveDetector(KLCZTBoost_SD);
+  G4double klHPGeBoost_rad = 59.8*mm;
+  G4double klHPGeBoost_z = 59.3*mm;
+  G4double HPGe_IP_distBoost = 250.*mm + 43.*mm; // 250 mm for Main table + 43 mm before entrance window
 
-  G4cout << "CZT X: " << posx_klcztBoost - 0.5*klcztBoost_z << " " << posx_klcztBoost << " " << posx_klcztBoost + 0.5*klcztBoost_z << G4endl;
-  G4cout << "CZT Y: " << -0.5*klcztBoost_y << " " << 0. << " " << 0.5*klcztBoost_y << G4endl;
-  G4cout << "CZT Z: " << -0.5*klcztBoost_x << " " << 0. << " " << 0.5*klcztBoost_x << G4endl;
+  G4double posx_klHPGeBoost =  HPGe_IP_distBoost+ 0.5*klHPGeBoost_z;
+
+  G4Tubs* solidKLIMAXHPGeBoost = new G4Tubs("KLIMAXHPGeBoost", 0.,0.5*klHPGeBoost_rad, 0.5*klHPGeBoost_z, 0., 360.*deg);
+  G4LogicalVolume* logicKLIMAXHPGeBoost = new G4LogicalVolume(solidKLIMAXHPGeBoost, HPGe, "World", 0, 0, 0);
+  G4VPhysicalVolume* physiKLIMAXHPGeBoost = new G4PVPlacement(rmY90, G4ThreeVector(posx_klHPGeBoost, 0., 0.),
+                                                             logicKLIMAXHPGeBoost, "KLIMAXHPGeBoost", World, false, 0, true);
+  logicKLIMAXHPGeBoost->SetVisAttributes(G4Colour(0.,1.,1.));
+  logicKLIMAXHPGeBoost->SetSensitiveDetector(KLHPGeBoost_SD);
+
+  G4cout << "HPGe Z: " << posx_klHPGeBoost - 0.5*klHPGeBoost_z << " " << posx_klHPGeBoost << " " << posx_klHPGeBoost + 0.5*klHPGeBoost_z << G4endl;
+
+/// KLIMAX HPGe Shielding 
+  
+  G4double klHPGeShieldingBoost_x = 50.*mm;
+  G4double klHPGeShieldingBoost_y = 100.*mm;
+  G4double klHPGeShieldingBoost_z = 200.*mm;
+ 
+  G4double posy_klHPGeShieldB12 = 0.*mm;
+  G4double posx_klHPGeShieldB12 = posx_klHPGeBoost - 0.5*klHPGeBoost_z + 0.5*klHPGeShieldingBoost_z;
+  G4double posz_klHPGeShieldB12 = 0.5*klHPGeShieldingBoost_x + 0.5*klHPGeShieldingBoost_x + 10.*mm;
+
+  G4Box* solidKLIMAXHPGeShieldingBoost = new G4Box("KLIMAXHPGeShieldingBoost", 0.5*klHPGeShieldingBoost_x,
+                                                      0.5*klHPGeShieldingBoost_y, 0.5*klHPGeShieldingBoost_z);
+  G4LogicalVolume* logicKLIMAXHPGeShieldingBoost = new G4LogicalVolume(solidKLIMAXHPGeShieldingBoost, Pb, "World", 0, 0, 0);
+  G4VPhysicalVolume* physiKLIMAXHPGeShieldingBoost1 = new G4PVPlacement(rmY90, G4ThreeVector(posx_klHPGeShieldB12, posy_klHPGeShieldB12, posz_klHPGeShieldB12),
+                                                                           logicKLIMAXHPGeShieldingBoost, "KLIMAXHPGeShieldingBoost1",
+                                                                           World, false, 0, true);
+  G4VPhysicalVolume* physiKLIMAXHPGeShieldingBoost2 = new G4PVPlacement(rmY90, G4ThreeVector(posx_klHPGeShieldB12, posy_klHPGeShieldB12, -posz_klHPGeShieldB12),
+                                                                           logicKLIMAXHPGeShieldingBoost, "KLIMAXHPGeShieldingBoost2",
+                                                                           World, false, 0, true);
+
+  G4double posy_klHPGeShieldB3 = 0.5*klHPGeBoost_rad + 0.5*klHPGeShieldingBoost_y;
+  G4double posx_klHPGeShieldB3 = HPGe_IP_distBoost+ 0.5*klHPGeBoost_rad + 0.5*klHPGeShieldingBoost_x;
+  G4double posz_klHPGeShieldB3 = 0.;
+
+  G4VPhysicalVolume* physiKLIMAXHPGeShieldingBoost3 = new G4PVPlacement(rmXYZ90, G4ThreeVector(posx_klHPGeShieldB3, posy_klHPGeShieldB3, posz_klHPGeShieldB3),
+                                                                           logicKLIMAXHPGeShieldingBoost, "KLIMAXHPGeShieldingBoost3",
+                                                                           World, false, 0, true);
+
+  G4double posy_klHPGeShieldB4 = 0.5*klHPGeBoost_rad + 0.5*klHPGeShieldingBoost_y;
+  G4double posx_klHPGeShieldB4 = posx_klHPGeShieldB3 + 2.*klHPGeShieldingBoost_x;
+  G4double posz_klHPGeShieldB4 = 0.;
+
+  G4VPhysicalVolume* physiKLIMAXHPGeShieldingBoost4 = new G4PVPlacement(rmXYZ90, G4ThreeVector(posx_klHPGeShieldB4, posy_klHPGeShieldB4, posz_klHPGeShieldB4),
+                                                                           logicKLIMAXHPGeShieldingBoost, "KLIMAXHPGeShieldingBoost4",
+                                                                           World, false, 0, true);
+  logicKLIMAXHPGeShieldingBoost->SetVisAttributes(G4Colour(0.5,0.5,0.5));
 
 // Shielding //
   G4double pos_shield;
@@ -1802,7 +1834,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
       pos_shield = 40.*mm + 0.5*Z_SHIEL;  // height of the lead table center
 
       if (SiddhartaSetup == 2020) {
-        X_SHIEL = 600.*mm;
+        X_SHIEL = 500.*mm;
         Y_SHIEL = 515.*mm;
         Z_SHIEL = 60.0*mm;
         pos_shield = 44.*mm + 0.5*Z_SHIEL;  // height of the lead table center

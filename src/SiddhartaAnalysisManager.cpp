@@ -216,7 +216,7 @@ void SiddhartaAnalysisManager::EndOfEvent(const G4Event* evt)
 
   if (histo->ntuData.nHitSDD > 0 || histo->ntuData.NbAnti > 0 || histo->ntuData.EnergyDepKMTop > 0
              || histo->ntuData.EnergyDepKMBottom > 0
-             || histo->ntuData.EnergyDepLMAntiboost > 0
+             || histo->ntuData.EnergyDepLMAntiBoost > 0
              || histo->ntuData.EnergyDepLMBoost > 0) 
   {
 	  int Anti_size = 9;
@@ -259,8 +259,8 @@ void SiddhartaAnalysisManager::EndOfEvent(const G4Event* evt)
 	  sddhit = true;
 
   }
-	  if((histo->ntuData.EnergyDepLMAntiboost>-1)||(histo->ntuData.EnergyDepKLDAntiBoost>0)||(histo->ntuData.EnergyDepKLT1AntiBoost>0)||(histo->ntuData.EnergyDepKLT2AntiBoost>0)||(histo->ntuData.EnergyDepKLBWAntiBoost>0)||(histo->ntuData.TotalEnergyDepKLCZTAntiBoost>0)) czthit = true;
-	  if((histo->ntuData.EnergyDepLMBoost>0)||(histo->ntuData.EnergyDepKLDBoost>0)||(histo->ntuData.EnergyDepKLTBoost>0)||(histo->ntuData.TotalEnergyDepKLCZTBoost>0)) hpgehit = true;
+	  if((histo->ntuData.EnergyDepLMAntiBoost>-1)||(histo->ntuData.EnergyDepKLDAntiBoost>0)||(histo->ntuData.EnergyDepKLT1AntiBoost>0)||(histo->ntuData.EnergyDepKLT2AntiBoost>0)||(histo->ntuData.EnergyDepKLBWAntiBoost>0)||(histo->ntuData.TotalEnergyDepKLCZTAntiBoost>0)) czthit = true;
+	  if((histo->ntuData.EnergyDepLMBoost>0)||(histo->ntuData.EnergyDepKLDBoost>0)||(histo->ntuData.EnergyDepKLTBoost>0)||(histo->ntuData.TotalEnergyDepKLHPGeBoost>0)) hpgehit = true;
 
 switch(ACTIVE_DET_ID)
 {

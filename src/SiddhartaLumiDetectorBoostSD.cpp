@@ -42,12 +42,16 @@ void SiddhartaLumiDetectorBoostSD::Initialize(G4HCofThisEvent* HCE)
     analysis->histo->ntuData.XYZLMBoost[0] = -1000000./mm;
     analysis->histo->ntuData.XYZLMBoost[1] = -1000000./mm;
     analysis->histo->ntuData.XYZLMBoost[2] = -1000000./mm;
+    analysis->histo->ntuData.XYZLMBoostKaonstop[0] = -1000000./mm;
+    analysis->histo->ntuData.XYZLMBoostKaonstop[1] = -1000000./mm;
+    analysis->histo->ntuData.XYZLMBoostKaonstop[2] = -1000000./mm;
+    analysis->histo->ntuData.lastkaonKinELMBoost = -1000000./eV;
   }
 }
 
 G4bool SiddhartaLumiDetectorBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 {
-  G4double edep = aStep->GetTotalEnergyDeposit();
+	G4double edep = aStep->GetTotalEnergyDeposit();
 
   if (edep == 0.)
     return false;
@@ -98,7 +102,8 @@ G4bool SiddhartaLumiDetectorBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistor
   }
 
   return true;
-}
+
+  }
 
 void SiddhartaLumiDetectorBoostSD::EndOfEvent(G4HCofThisEvent*)
 {

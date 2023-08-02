@@ -58,9 +58,9 @@ private:
   G4LogicalVolume*   logicLumiDetectorBoost;    // 2020
   G4VPhysicalVolume* physiLumiDetectorBoost;    // 2020
 
-  G4Box*             solidLumiDetectorAntiboost;    // 2020
-  G4LogicalVolume*   logicLumiDetectorAntiboost;    // 2020
-  G4VPhysicalVolume* physiLumiDetectorAntiboost;    // 2020
+  G4Box*             solidLumiDetectorAntiBoost;    // 2020
+  G4LogicalVolume*   logicLumiDetectorAntiBoost;    // 2020
+  G4VPhysicalVolume* physiLumiDetectorAntiBoost;    // 2020
 
   G4Box*             solidKLIMAXDegAntiBoost;    // 2020
   G4LogicalVolume*   logicKLIMAXDegAntiBoost;    // 2020
@@ -90,9 +90,9 @@ private:
   G4LogicalVolume*   logicKLIMAXTargetBoost;    // 2020
   G4VPhysicalVolume* physiKLIMAXTargetBoost;    // 2020
 
-  G4Box*             solidKLIMAXCZTBoost;    // 2020
-  G4LogicalVolume*   logicKLIMAXCZTBoost;    // 2020
-  G4VPhysicalVolume* physiKLIMAXCZTBoost;    // 2020
+  G4Box*             solidKLIMAXHPGeBoost;    // 2020
+  G4LogicalVolume*   logicKLIMAXHPGeBoost;    // 2020
+  G4VPhysicalVolume* physiKLIMAXHPGeBoost;    // 2020
 
   G4Box*             solidKPlusDetector;    // pointer to the solid KaonPlusDetector
   G4LogicalVolume*   logicKPlusDetector;    // pointer to the logical KaonPlusDetector

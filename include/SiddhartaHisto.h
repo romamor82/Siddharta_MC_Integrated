@@ -36,7 +36,7 @@ struct siddharta_t {
   double VertexMomentum[3];
   int nHitSDD;
   int nHitCZTAntiBoost;
-  int nHitCZTBoost;
+  int nHitHPGeBoost;
   int NoSDD[MaxHits];
   int NbHitSDD[MaxHits];
   double EnergySDD[MaxHits];
@@ -77,14 +77,14 @@ struct siddharta_t {
   int pdgcodeLMBoost;
   double kaonKinELMBoost;
   double lastkaonKinELMBoost;
-  double TimeLMAntiboost;
-  double EnergyDepLMAntiboost;
-  double XYZLMAntiboost[3];
-  double XYZLMAntiboostKaonstop[3];
-  char particleNameLMAntiboost[20];
-  int pdgcodeLMAntiboost;
-  double kaonKinELMAntiboost;
-  double lastkaonKinELMAntiboost;
+  double TimeLMAntiBoost;
+  double EnergyDepLMAntiBoost;
+  double XYZLMAntiBoost[3];
+  double XYZLMAntiBoostKaonstop[3];
+  char particleNameLMAntiBoost[20];
+  int pdgcodeLMAntiBoost;
+  double kaonKinELMAntiBoost;
+  double lastkaonKinELMAntiBoost;
 
   double TimeKLDAntiBoost;
   double EnergyDepKLDAntiBoost;
@@ -144,13 +144,13 @@ struct siddharta_t {
   double KLTBooststop[3];
   int pdgcodeKLTBoost;
 
-  double TotalEnergyDepKLCZTBoost;
-  double gammaKinEKLCZTBoost;
-  double TimeKLCZTBoost[MaxCZTHits];
-  double EnergyDepKLCZTBoost[MaxCZTHits];
-  double kaonKinEKLCZTBoost[MaxCZTHits];
-  double XYZKLCZTBoost[3][MaxCZTHits];
-  int pdgcodeKLCZTBoost[MaxCZTHits];
+  double TotalEnergyDepKLHPGeBoost;
+  double gammaKinEKLHPGeBoost;
+  double TimeKLHPGeBoost[MaxCZTHits];
+  double EnergyDepKLHPGeBoost[MaxCZTHits];
+  double kaonKinEKLHPGeBoost[MaxCZTHits];
+  double XYZKLHPGeBoost[3][MaxCZTHits];
+  int pdgcodeKLHPGeBoost[MaxCZTHits];
 
   double TimeGhost;
   double XYZGhost[3];
