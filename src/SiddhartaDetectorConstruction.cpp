@@ -1620,7 +1620,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   /// KLIMAXTargetBoost
   G4double dx_target_b = dx_lumi;
   G4double dy_target_b = dz_lumi;
-  G4double kltargetBoost_z = 5*mm;  //toreplace_b_target//
+  G4double kltargetBoost_z = 1.5*mm;  //toreplace_b_target//
   G4double Lumi_Target_distBoost = 0.;
 
   G4double posx_kltargetBoost = posx_kldegBoost + 0.5*kldegBoost_z + Lumi_Target_distBoost + 0.5*kltargetBoost_z;

@@ -44,6 +44,9 @@ void KLIMAXTarget1AntiBoostSD::Initialize(G4HCofThisEvent* HCE)
     analysis->histo->ntuData.XYZKLT1AntiBoost[0] = -1000000 / mm;
     analysis->histo->ntuData.XYZKLT1AntiBoost[1] = -1000000 / mm;
     analysis->histo->ntuData.XYZKLT1AntiBoost[2] = -1000000 / mm;
+    analysis->histo->ntuData.KLT1AntiBoostKaonstop[0] = -1000000 / mm; 
+    analysis->histo->ntuData.KLT1AntiBoostKaonstop[1] = -1000000 / mm;
+    analysis->histo->ntuData.KLT1AntiBoostKaonstop[2] = -1000000 / mm;
     analysis->histo->ntuData.kaonKinEKLT1AntiBoost = -1000000 / eV;
     analysis->histo->ntuData.lastkaonKinEKLT1AntiBoost = -1000000 / eV;
     analysis->histo->ntuData.pdgcodeKLT1AntiBoost = -1000000;

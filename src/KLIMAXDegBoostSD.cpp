@@ -25,7 +25,7 @@ void KLIMAXDegBoostSD::Initialize(G4HCofThisEvent* HCE)
   if (HCID<0) {
     HCID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
   }
-  HCE->AddHitsCollection(HCID, trackerCollection);
+  HCE->AddHitsCollection( HCID, trackerCollection ); 
 
   SiddhartaAnalysisManager* analysis = SiddhartaAnalysisManager::getInstance();
 
@@ -95,9 +95,9 @@ G4bool KLIMAXDegBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
       if (edep > sciEnergyMax) {
         sciEnergyMax = edep;
         TimeKLDBoost = aStep->GetTrack()->GetGlobalTime();
-        X = (aStep->GetTrack()->GetPosition())[0] ;
-        Y = (aStep->GetTrack()->GetPosition())[1] ;
-        Z = (aStep->GetTrack()->GetPosition())[2] ;
+        X = (aStep->GetTrack()->GetPosition())[0];
+        Y = (aStep->GetTrack()->GetPosition())[1];
+        Z = (aStep->GetTrack()->GetPosition())[2];
 
         pname = aStep->GetTrack()->GetDefinition()->GetParticleName();
         analysis->histo->ntuData.pdgcodeKLDBoost = aStep->GetTrack()->GetDynamicParticle()->GetPDGcode();
@@ -118,6 +118,7 @@ G4bool KLIMAXDegBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 
   return true;
 }
+
 
 void KLIMAXDegBoostSD::EndOfEvent(G4HCofThisEvent*)
 {

@@ -265,6 +265,7 @@ void SiddhartaHisto::book()
 	      ROOTntup[i]->Branch("EnergyDepKLTBoost",&ntuData.EnergyDepKLTBoost,"EnergyDepKLTBoost/D");
 	      ROOTntup[i]->Branch("XYZKLTBoost",ntuData.XYZKLTBoost,"XYZKLTBoost[3]/D");
 	      ROOTntup[i]->Branch("KLTBooststop",ntuData.KLTBooststop,"KLTBooststop[3]/D");
+	      ROOTntup[i]->Branch("KLTBoostKaonstop",ntuData.KLTBoostKaonstop,"KLTBoostKaonstop[3]/D");
 	      ROOTntup[i]->Branch("pdgcodeKLTBoost",&ntuData.pdgcodeKLTBoost,"pdgcodeKLTBoost/I");
 	      ROOTntup[i]->Branch("kaonKinEKLTBoost",&ntuData.kaonKinEKLTBoost,"kaonKinEKLTBoost/D");
 	      ROOTntup[i]->Branch("lastkaonKinEKLTBoost",&ntuData.lastkaonKinEKLTBoost,"lastkaonKinEKLTBoost/D");

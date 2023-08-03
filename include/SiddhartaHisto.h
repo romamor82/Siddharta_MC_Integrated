@@ -142,6 +142,7 @@ struct siddharta_t {
   double lastkaonKinEKLTBoost;
   double XYZKLTBoost[3];
   double KLTBooststop[3];
+  double KLTBoostKaonstop[3];
   int pdgcodeKLTBoost;
 
   double TotalEnergyDepKLHPGeBoost;
