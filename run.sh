@@ -5,3 +5,4 @@
 # 3 -> out file
 
 nohup ./sidd_mc $1 $2 > $3 &
+
