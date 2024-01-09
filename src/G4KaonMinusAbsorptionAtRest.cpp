@@ -508,6 +508,7 @@ G4DynamicParticleVector* G4KaonMinusAbsorptionAtRest::KaonNucleonReaction()
 	producedBosonDef = G4Gamma::Gamma();
 	G4double photonEnergy;
 	G4bool CZT_Al_Target = false;
+	G4bool CZT_S_Target = false;
 	G4bool CZT_C_Target = false;
 	G4bool HPGe_Pb_Target = false;
 	unsigned nphotons = 0;
@@ -600,7 +601,7 @@ G4DynamicParticleVector* G4KaonMinusAbsorptionAtRest::KaonNucleonReaction()
 		for (unsigned i=0; i<nphotons; i++) 
 		{
 			photonEnergy = photonEnergy1[i];
-			G4cout << nphotons << " generated in Al: " << i << " " << photonEnergy / eV << G4endl;
+//			G4cout << nphotons << " generated in Al: " << i << " " << photonEnergy / eV << G4endl;
 
 			G4DynamicParticle* producedBoson = new G4DynamicParticle(producedBosonDef, dummy);
 
@@ -641,7 +642,7 @@ G4DynamicParticleVector* G4KaonMinusAbsorptionAtRest::KaonNucleonReaction()
 		for (unsigned i=0; i<nphotons; i++) 
 		{
 			photonEnergy = photonEnergy1[i];
-			G4cout << nphotons << " generated in C: " << i << " " << photonEnergy / eV << G4endl;
+//			G4cout << nphotons << " generated in C: " << i << " " << photonEnergy / eV << G4endl;
 
 			G4DynamicParticle* producedBoson = new G4DynamicParticle(producedBosonDef, dummy);
 
@@ -662,6 +663,47 @@ G4DynamicParticleVector* G4KaonMinusAbsorptionAtRest::KaonNucleonReaction()
 		}
 		CZT_C_Target = false;
 	}
+
+	if (((iniA) == 32) && ((iniZ) == 16))               //Sulfur for CZT
+	{
+		//G4cout << " IN TARGET SULFUR " << G4endl;
+		CZT_S_Target = true;
+		photonEnergy1.push_back(160753.0*eV); // 4-->3
+		photonEnergy1.push_back(74405.5*eV); // 5-->4
+		photonEnergy1.push_back(235158.0*eV); // 5-->3
+		photonEnergy1.push_back(40417.8*eV); // 6-->5
+		photonEnergy1.push_back(114823.0*eV); // 6-->4
+		photonEnergy1.push_back(64788.5*eV); // 7-->5
+	}
+	if(CZT_S_Target)
+	{
+		nphotons = photonEnergy1.size();
+
+		for (unsigned i=0; i<nphotons; i++) 
+		{
+			photonEnergy = photonEnergy1[i];
+//			G4cout << nphotons << " generated in Al: " << i << " " << photonEnergy / eV << G4endl;
+
+			G4DynamicParticle* producedBoson = new G4DynamicParticle(producedBosonDef, dummy);
+
+			//Creation of spearate function to draw in sphere
+			G4double costheta = 2.0*G4UniformRand() - 1.0;
+			G4double sintheta = std::sqrt(1.0 - costheta*costheta);
+			G4double phi = 2.0*pi*G4UniformRand();
+			G4double photonMomentum = photonEnergy;
+
+			G4double pz=costheta*photonMomentum;
+			G4double px=sintheta*std::cos(phi)*photonMomentum;
+			G4double py=sintheta*std::sin(phi)*photonMomentum;
+
+			G4ThreeVector photMomentum(px,py,pz);
+			//	G4cout << px/eV << " " << py/eV << " " << pz/eV << G4endl;
+			producedBoson->SetMomentum(photMomentum);
+			products->push_back(producedBoson);
+		}
+		CZT_S_Target = false;
+	}
+
 
 
 

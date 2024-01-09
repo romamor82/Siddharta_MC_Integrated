@@ -150,8 +150,7 @@ code in the main is cleaner!! -> Losing up the tables -> vectors with safe use *
 	  mycard->SetDoneStatus(0);
 	  mycard->SetEventMult(0);
  //     inputbeam.open(infile); //2023 Feb 11 this should not be comented, is a rewind and the only open during run
-      G4cout << ":::::::::::: " << howmany << " events are to be generated for " << nbOfSeconds << " seconds of "
-             << beamCurrent << " mA run ::::::::::::::::::::::::::::::::::::::::\n";
+	  G4cout << howmany << " events are to be generated for " << nbOfSeconds << " seconds of " << beamCurrent << " mA run" << G4endl;
     }
   }
 

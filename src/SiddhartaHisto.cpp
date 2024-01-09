@@ -19,8 +19,8 @@
 
 SiddhartaHisto::SiddhartaHisto()
 {
-  verbose = 1;
-  histName = "siddharta";
+  verbose = 0;
+  histName   = "siddharta_10";  //toreplace//
   histType = "root";
   nHisto = 0;
   nHisto3 = 0;
@@ -80,11 +80,12 @@ void SiddhartaHisto::book()
   SiddhartaCard* mycard = SiddhartaCard::getInstance();
   int SiddhartaSetup = mycard->variables["SiddhartaSetupVersion"];
 
-  histName = histName + "_" + mycard->GetCardFileName();
+  //histName = histName + "_" + mycard->GetCardFileName();
 
   std::stringstream ss;
   ss << mycard->GetG4RandGaussSeed();
-  G4String fileNameROOT = histName + ss.str() + G4String(".root");
+  //G4String fileNameROOT = histName + ss.str() + G4String(".root");
+  G4String fileNameROOT = histName + G4String(".root");
 
   hfileROOT = new TFile(fileNameROOT.c_str() ,"RECREATE","ROOT file for Siddharta");
   G4cout << "Root file: " << fileNameROOT << G4endl;
@@ -224,6 +225,10 @@ void SiddhartaHisto::book()
 	      ROOTntup[i]->Branch("KLT1AntiBooststop",ntuData.KLT1AntiBooststop,"KLT1AntiBooststop[3]/D");
 	      ROOTntup[i]->Branch("KLT1AntiBoostKaonstop",ntuData.KLT1AntiBoostKaonstop,"KLT1AntiBoostKaonstop[3]/D");
 	      ROOTntup[i]->Branch("pdgcodeKLT1AntiBoost",&ntuData.pdgcodeKLT1AntiBoost,"pdgcodeKLT1AntiBoost/I");
+	      ROOTntup[i]->Branch("KinEKLT1AntiBoost",&ntuData.KinEKLT1AntiBoost,"KinEKLT1AntiBoost/D");
+	      ROOTntup[i]->Branch("MomKLT1AntiBoost",&ntuData.MomKLT1AntiBoost,"MomKLT1AntiBoost/D");
+	      ROOTntup[i]->Branch("lastKinEKLT1AntiBoost",&ntuData.lastKinEKLT1AntiBoost,"lastKinEKLT1AntiBoost/D");
+	      ROOTntup[i]->Branch("lastMomKLT1AntiBoost",&ntuData.lastMomKLT1AntiBoost,"lastMomKLT1AntiBoost/D");
 	      ROOTntup[i]->Branch("kaonKinEKLT1AntiBoost",&ntuData.kaonKinEKLT1AntiBoost,"kaonKinEKLT1AntiBoost/D");
 	      ROOTntup[i]->Branch("gammaKinEKLT1AntiBoost",&ntuData.gammaKinEKLT1AntiBoost,"gammaKinEKLT1AntiBoost/D");
 	      ROOTntup[i]->Branch("lastkaonKinEKLT1AntiBoost",&ntuData.lastkaonKinEKLT1AntiBoost,"lastkaonKinEKLT1AntiBoost/D");
@@ -234,6 +239,10 @@ void SiddhartaHisto::book()
 	      ROOTntup[i]->Branch("KLT2AntiBooststop",ntuData.KLT2AntiBooststop,"KLT2AntiBooststop[3]/D");
 	      ROOTntup[i]->Branch("KLT2AntiBoostKaonstop",ntuData.KLT2AntiBoostKaonstop,"KLT2AntiBoostKaonstop[3]/D");
 	      ROOTntup[i]->Branch("pdgcodeKLT2AntiBoost",&ntuData.pdgcodeKLT2AntiBoost,"pdgcodeKLT2AntiBoost/I");
+	      ROOTntup[i]->Branch("KinEKLT2AntiBoost",&ntuData.KinEKLT2AntiBoost,"KinEKLT2AntiBoost/D");
+	      ROOTntup[i]->Branch("MomKLT2AntiBoost",&ntuData.MomKLT2AntiBoost,"MomKLT2AntiBoost/D");
+	      ROOTntup[i]->Branch("lastKinEKLT2AntiBoost",&ntuData.lastKinEKLT2AntiBoost,"lastKinEKLT2AntiBoost/D");
+	      ROOTntup[i]->Branch("lastMomKLT2AntiBoost",&ntuData.lastMomKLT2AntiBoost,"lastMomKLT2AntiBoost/D");
 	      ROOTntup[i]->Branch("kaonKinEKLT2AntiBoost",&ntuData.kaonKinEKLT2AntiBoost,"kaonKinEKLT2AntiBoost/D");
 	      ROOTntup[i]->Branch("gammaKinEKLT2AntiBoost",&ntuData.gammaKinEKLT2AntiBoost,"gammaKinEKLT2AntiBoost/D");
 	      ROOTntup[i]->Branch("lastkaonKinEKLT2AntiBoost",&ntuData.lastkaonKinEKLT2AntiBoost,"lastkaonKinEKLT2AntiBoost/D");
@@ -269,6 +278,10 @@ void SiddhartaHisto::book()
 	      ROOTntup[i]->Branch("KLTBooststop",ntuData.KLTBooststop,"KLTBooststop[3]/D");
 	      ROOTntup[i]->Branch("KLTBoostKaonstop",ntuData.KLTBoostKaonstop,"KLTBoostKaonstop[3]/D");
 	      ROOTntup[i]->Branch("pdgcodeKLTBoost",&ntuData.pdgcodeKLTBoost,"pdgcodeKLTBoost/I");
+	      ROOTntup[i]->Branch("KinEKLTBoost",&ntuData.KinEKLTBoost,"KinEKLTBoost/D");
+	      ROOTntup[i]->Branch("MomKLTBoost",&ntuData.MomKLTBoost,"MomKLTBoost/D");
+	      ROOTntup[i]->Branch("lastKinEKLTBoost",&ntuData.lastKinEKLTBoost,"lastKinEKLTBoost/D");
+	      ROOTntup[i]->Branch("lastMomKLTBoost",&ntuData.lastMomKLTBoost,"lastMomKLTBoost/D");
 	      ROOTntup[i]->Branch("kaonKinEKLTBoost",&ntuData.kaonKinEKLTBoost,"kaonKinEKLTBoost/D");
 	      ROOTntup[i]->Branch("gammaKinEKLTBoost",&ntuData.gammaKinEKLTBoost,"gammaKinEKLTBoost/D");
 	      ROOTntup[i]->Branch("lastkaonKinEKLTBoost",&ntuData.lastkaonKinEKLTBoost,"lastkaonKinEKLTBoost/D");

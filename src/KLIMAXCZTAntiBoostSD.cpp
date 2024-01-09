@@ -91,10 +91,9 @@ G4bool KLIMAXCZTAntiBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
   if (analysis->YesHistos) {
     if(aStep->GetTrack()->GetDynamicParticle()->GetPDGcode() == 22) {
       gammacounter++;
-      G4cout << gammacounter << " photon in CZT AntiBoost: " << aStep->GetTrack()->GetKineticEnergy() / eV  << G4endl;
+//      G4cout << gammacounter << " photon in CZT AntiBoost: " << aStep->GetTrack()->GetKineticEnergy() / eV  << G4endl;
 
-      if (gammacounter == 1)
-        analysis->histo->ntuData.gammaKinEKLCZTAntiBoost = aStep->GetTrack()->GetKineticEnergy() / eV;
+      if(gammacounter == 1) {analysis->histo->ntuData.gammaKinEKLCZTAntiBoost = aStep->GetTrack()->GetKineticEnergy() / eV;}
     }
 
     if (edep > sciEnergyMax) {

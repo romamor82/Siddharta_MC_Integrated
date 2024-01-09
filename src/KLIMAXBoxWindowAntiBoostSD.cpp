@@ -110,8 +110,7 @@ G4bool KLIMAXBoxWindowAntiBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*
         kaonCounter ++;
       }
 
-      if (kaonCounter == 1)
-        analysis->histo->ntuData.kaonKinEKLT2AntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the first kaon hit
+      if(kaonCounter == 1) {analysis->histo->ntuData.kaonKinEKLT2AntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV;} // get the Energy of the first kaon hit
 
       analysis->histo->ntuData.lastkaonKinEKLT2AntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the last kaon hit
     }

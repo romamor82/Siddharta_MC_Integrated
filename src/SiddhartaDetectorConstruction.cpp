@@ -53,6 +53,8 @@
 #include <G4Cons.hh>
 #include <G4Trd.hh>
 #include <G4Box.hh>
+#include <G4MultiUnion.hh>
+#include <G4Transform3D.hh>
 #include <G4ios.hh>
 
 //Rewrite constructor to more clear form
@@ -162,6 +164,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
 
   G4Material* Al = new G4Material("Al", z=13., a=26.981539*g/mole, density=2.7*g/cm3);
   G4Material* Silicon = new G4Material("Silicon", z=14., a=28.0855*g/mole, density=2.3290*g/cm3);
+  G4Material* S = new G4Material("S", z=16., a=32.065*g/mole, density=1.96*g/cm3);
   G4Material* Ti = new G4Material("Ti", z=22., a=47.867*g/mole, density=4.54*g/cm3);
   G4Material* Cu = new G4Material("Copper", z=29., a=63.546*g/mole, density=8.94*g/cm3);
   G4Material* Zr = new G4Material("Zr", z=40., a=91.224*g/mole, density=6.52*g/cm3);
@@ -264,6 +267,9 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
 
   G4Material* graphite = new G4Material("graphite", density = 2.2*g/cm3, nel=1);
   graphite->AddElement(C, 1);
+
+  G4Material* KLIMAX_C = new G4Material("KLIMAX_C", density = 1.*g/cm3, nel=1);
+  KLIMAX_C->AddElement(C, 1);
 
   G4Material* Polyethylene = new G4Material("Polyethylene", density=0.930*g/cm3, nel=2); // DENSITYYYYY ////
   Polyethylene->AddElement(C, 2);
@@ -1496,55 +1502,6 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   G4double kldegAntiBoost_z = 0.*mm;  //toreplace_ab_deg//
   G4double posx_kldegAntiBoost = -posx_lumi_anti - 0.5*dz_lumi - lumi_al_dz - lumi_my_dz - lumi_pc_dz - 0.5*kldegAntiBoost_z;
 
-/// KLIMAXTarget1AntiBoost
-  G4double dx_target1_ab = 40*mm; //like in june-july 2023
-  G4double dy_target1_ab = 43*mm; //like in june-july 2023
-  G4double kltarget1AntiBoost_z = 0.07*mm;  //toreplace_ab_target1//
-  G4double Lumi_Target1_distAntiBoost = 0*mm;
-  G4double posx_kltarget1AntiBoost = posx_kldegAntiBoost - 0.5*kldegAntiBoost_z - Lumi_Target1_distAntiBoost- 0.5*kltarget1AntiBoost_z;
-
-  dx_target1_ab = dx_lumi;
-  dy_target1_ab = dy_lumi;
-  //kltarget1AntiBoost_z += 0.2*mm; // Al box entrance window
-
-  G4Box* solidKLIMAXTarget1AntiBoost = new G4Box("KLIMAXTarget1AntiBoost", 0.5*dx_target1_ab, 0.5*dy_target1_ab, 0.5*kltarget1AntiBoost_z);
-  G4LogicalVolume* logicKLIMAXTarget1AntiBoost = new G4LogicalVolume(solidKLIMAXTarget1AntiBoost, Al, "World", 0, 0, 0);
-  G4VPhysicalVolume* physiKLIMAXTarget1AntiBoost = new G4PVPlacement(rmY90,
-                                                                     G4ThreeVector(posx_kltarget1AntiBoost,0.,0.),
-                                                                     logicKLIMAXTarget1AntiBoost, "KLIMAXTarget1AntiBoost",
-                                                                     World, false, 0, true);
-  logicKLIMAXTarget1AntiBoost->SetVisAttributes(G4Colour(1.,1.,0.));
-  logicKLIMAXTarget1AntiBoost->SetSensitiveDetector(KLT1AntiBoost_SD);
-
-  G4cout << "TARGET 1 X: " << posx_kltarget1AntiBoost - 0.5*kltarget1AntiBoost_z << " " << posx_kltarget1AntiBoost << " ";
-  G4cout << posx_kltarget1AntiBoost + 0.5*kltarget1AntiBoost_z << G4endl;
-  G4cout << "TARGET 1 Y: " << -0.5*dy_target1_ab << " " << 0. << " " << 0.5*dy_target1_ab << G4endl;
-  G4cout << "TARGET 1 Z: " << -0.5*dx_target1_ab << " " << 0. << " " << 0.5*dx_target1_ab << G4endl;
-
-/// KLIMAXTarget2AntiBoost
-  G4double dx_target2_ab = 40*mm; //like in june-july 2023
-  G4double dy_target2_ab = 43*mm; //like in june-july 2023
-  G4double kltarget2AntiBoost_z = 0.1*mm;  //toreplace_ab_target2//
-  G4double Target1_Target2_distAntiBoost = 0*mm;
-  G4double posx_kltarget2AntiBoost = posx_kltarget1AntiBoost - 0.5*kltarget1AntiBoost_z - Target1_Target2_distAntiBoost - 0.5*kltarget2AntiBoost_z;
-
-  dx_target2_ab = dx_lumi;
-  dy_target2_ab = dy_lumi;
-  //kltarget2AntiBoost_z += 0.2*mm; // Al box entrance window
-
-  G4Box* solidKLIMAXTarget2AntiBoost = new G4Box("KLIMAXTarget2AntiBoost", 0.5*dx_target2_ab, 0.5*dy_target2_ab, 0.5*kltarget2AntiBoost_z);
-  G4LogicalVolume* logicKLIMAXTarget2AntiBoost = new G4LogicalVolume(solidKLIMAXTarget2AntiBoost, graphite, "World", 0, 0, 0);
-  G4VPhysicalVolume* physiKLIMAXTarget2AntiBoost = new G4PVPlacement(rmY90, G4ThreeVector(posx_kltarget2AntiBoost, 0., 0.),
-                                                                     logicKLIMAXTarget2AntiBoost, "KLIMAXTarget2AntiBoost",
-                                                                     World, false, 0, true);
-  logicKLIMAXTarget2AntiBoost->SetVisAttributes(G4Colour(1.,0.3,0.2));
-  logicKLIMAXTarget2AntiBoost->SetSensitiveDetector(KLT2AntiBoost_SD);
-
-  G4cout << "TARGET 2 X: " << posx_kltarget2AntiBoost - 0.5*kltarget2AntiBoost_z << " " << posx_kltarget2AntiBoost << " ";
-  G4cout << posx_kltarget2AntiBoost+  0.5*kltarget2AntiBoost_z << G4endl;
-  G4cout << "TARGET 2 Y: " << -0.5*dy_target2_ab << " " << 0. << " " << 0.5*dy_target2_ab << G4endl;
-  G4cout << "TARGET 2 Z: " << -0.5*dx_target2_ab << " " << 0. << " " << 0.5*dx_target2_ab << G4endl;
-
 /// KLIMAXBoxWindowAntiBoost
   G4double dx_boxwindow_ab = 40*mm; // like in june-july 2023
   G4double dy_boxwindow_ab = 43*mm;
@@ -1552,7 +1509,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   G4double klboxwindowAntiBoost_z = 0.27*mm;  //toreplace_ab_boxwindow//
   //klboxwindowAntiBoost_z += 0.2*mm; // Al box entrance window
 
-  G4double posx_klboxwindowAntiBoost = -215*mm - 0.5*klboxwindowAntiBoost_z;
+  G4double posx_klboxwindowAntiBoost = -205*mm - 0.5*klboxwindowAntiBoost_z;
 
   G4Box* solidKLIMAXBoxWindowAntiBoost = new G4Box("KLIMAXBoxWindowAntiBoost", 0.5*dx_boxwindow_ab, 0.5*dy_boxwindow_ab, 0.5*klboxwindowAntiBoost_z);
   G4LogicalVolume* logicKLIMAXBoxWindowAntiBoost = new G4LogicalVolume(solidKLIMAXBoxWindowAntiBoost, Al, "World", 0, 0, 0);
@@ -1566,6 +1523,96 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
   G4cout << posx_klboxwindowAntiBoost + 0.5*klboxwindowAntiBoost_z << G4endl;
   G4cout << "Box Window Y: " << -0.5*dy_boxwindow_ab << " " << 0. << " " << 0.5*dy_boxwindow_ab << G4endl;
   G4cout << "Box Window Z: " << -0.5*dx_boxwindow_ab << " " << 0. << " " << 0.5*dx_boxwindow_ab << G4endl;
+
+  G4double Lumi_Target1_distAntiBoost = 0*mm; // Target on Lumi
+//  Lumi_Target1_distAntiBoost = fabs(posx_klboxwindowAntiBoost + 0.5*klboxwindowAntiBoost_z + kltarget2AntiBoost_z + kltarget1AntiBoost_z -posx_kldegAntiBoost); // Targets on Box
+  G4double Target1_Target2_distAntiBoost = 0*mm;
+  
+
+/// KLIMAXTarget1AntiBoost && KLIMAXTarget2AntiBoost
+
+  //G4double dx_target1_ab = 40*mm; //like in june-july 2023
+  //G4double dy_target1_ab = 43*mm; //like in june-july 2023
+  //G4double kltarget1AntiBoost_z = 0.075*mm;  // Al Target // 
+  //kltarget1AntiBoost_z = 0.017*mm;  // Lead target
+  //dx_target1_ab = dx_lumi;
+  //dy_target1_ab = dy_lumi;
+  //kltarget1AntiBoost_z += 0.2*mm; // Al box entrance window
+					    
+  G4double dx_target2_ab = 40*mm; //like in june-july 2023
+  G4double dy_target2_ab = 43*mm; //like in june-july 2023
+  G4double kltarget2AntiBoost_z = 1.0*mm;  // Carbon target //
+  //kltarget2AntiBoost_z = 0.112*mm;  // Sulfur target
+  dx_target2_ab = dx_lumi;
+  dy_target2_ab = dy_lumi;
+  //kltarget2AntiBoost_z += 0.2*mm; // Al box entrance window
+
+
+  /*
+  G4Box* solidKLIMAXTarget1AntiBoost = new G4Box("KLIMAXTarget1AntiBoost", 0.5*dx_target1_ab, 0.5*dy_target1_ab, 0.5*kltarget1AntiBoost_z);
+  G4LogicalVolume* logicKLIMAXTarget1AntiBoost = new G4LogicalVolume(solidKLIMAXTarget1AntiBoost, Al, "World", 0, 0, 0); // Aluminum target
+ // G4LogicalVolume* logicKLIMAXTarget1AntiBoost = new G4LogicalVolume(solidKLIMAXTarget1AntiBoost, S, "World", 0, 0, 0); // Sulfur target
+//  G4LogicalVolume* logicKLIMAXTarget1AntiBoost = new G4LogicalVolume(solidKLIMAXTarget1AntiBoost, Pb, "World", 0, 0, 0); // Lead target
+  G4VPhysicalVolume* physiKLIMAXTarget1AntiBoost = new G4PVPlacement(rmY90,
+                                                                     G4ThreeVector(posx_kltarget1AntiBoost,0.,0.),
+                                                                     logicKLIMAXTarget1AntiBoost, "KLIMAXTarget1AntiBoost",
+                                                                     World, false, 0, true);
+  logicKLIMAXTarget1AntiBoost->SetVisAttributes(G4Colour(0.67,0.,1.));
+  logicKLIMAXTarget1AntiBoost->SetSensitiveDetector(KLT1AntiBoost_SD);
+
+*/
+
+  
+  G4double dx_target1_ab_1 = 8.*cm;
+  G4double dy_target1_ab_1 = 5.*cm;
+  G4double kltarget1AntiBoost_z_1 = 0.150*mm;  
+  G4double posx_kltarget1AntiBoost_1 = posx_kldegAntiBoost - 0.5*kldegAntiBoost_z - Lumi_Target1_distAntiBoost- 0.5*kltarget1AntiBoost_z_1;
+
+  G4Box* solidKLIMAXTarget1AntiBoost_1 = new G4Box("KLIMAXTarget1AntiBoost_1", 0.5*dx_target1_ab_1, 0.5*dy_target1_ab_1, 0.5*kltarget1AntiBoost_z_1);
+
+  G4double dx_target1_ab_2 = 5.*cm;
+  G4double dy_target1_ab_2 = 5.*cm;
+  G4double kltarget1AntiBoost_z_2 = (5.075-0.150)*mm;  
+  G4double posx_kltarget1AntiBoost_2 = posx_kltarget1AntiBoost_1 - 0.5*kltarget1AntiBoost_z_1 - 0.5*kltarget1AntiBoost_z_2;
+  
+  G4Box* solidKLIMAXTarget1AntiBoost_2 = new G4Box("KLIMAXTarget1AntiBoost_2", 0.5*dx_target1_ab_2, 0.5*dy_target1_ab_2, 0.5*kltarget1AntiBoost_z_2);
+//  mlt1->AddNode(*solidKLIMAXTarget1AntiBoost_2,G4TranslateX3D((posx_kltarget1AntiBoost_2-posx_kltarget1AntiBoost_1)));
+  
+//  mlt1->Voxelize();
+  
+  G4UnionSolid* solidKLIMAXTarget1AntiBoost = new G4UnionSolid("KLIMAXTarget1AntiBoost",solidKLIMAXTarget1AntiBoost_1,solidKLIMAXTarget1AntiBoost_2,G4TranslateZ3D(0.5*(kltarget1AntiBoost_z_1+kltarget1AntiBoost_z_2)));
+
+  G4LogicalVolume* logicKLIMAXTarget1AntiBoost = new G4LogicalVolume(solidKLIMAXTarget1AntiBoost, Al, "World", 0, 0, 0); // Aluminum target
+  G4VPhysicalVolume* physiKLIMAXTarget1AntiBoost = new G4PVPlacement(rmY90,
+                                                                     G4ThreeVector(posx_kltarget1AntiBoost_1,0.,0.),
+                                                                     logicKLIMAXTarget1AntiBoost, "KLIMAXTarget1AntiBoost",
+                                                                     World, false, 0, true);
+  logicKLIMAXTarget1AntiBoost->SetVisAttributes(G4Colour(0.67,0.,1.));
+  logicKLIMAXTarget1AntiBoost->SetSensitiveDetector(KLT1AntiBoost_SD);
+  
+  
+  
+  dx_target2_ab = 5.*cm;
+  dy_target2_ab = 5.*cm;
+  kltarget2AntiBoost_z = 1.0*mm;  // Carbon target //
+  G4double posx_kltarget2AntiBoost = posx_kltarget1AntiBoost_1 - 0.5*kltarget1AntiBoost_z_1 - kltarget1AntiBoost_z_2 - Target1_Target2_distAntiBoost - 0.5*kltarget2AntiBoost_z;
+  G4Box* solidKLIMAXTarget2AntiBoost = new G4Box("KLIMAXTarget2AntiBoost", 0.5*dx_target2_ab, 0.5*dy_target2_ab, 0.5*kltarget2AntiBoost_z);
+  G4LogicalVolume* logicKLIMAXTarget2AntiBoost = new G4LogicalVolume(solidKLIMAXTarget2AntiBoost, KLIMAX_C, "World", 0, 0, 0);
+  G4VPhysicalVolume* physiKLIMAXTarget2AntiBoost = new G4PVPlacement(rmY90, G4ThreeVector(posx_kltarget2AntiBoost, 0., 0.),
+                                                                     logicKLIMAXTarget2AntiBoost, "KLIMAXTarget2AntiBoost",
+                                                                     World, false, 0, true);
+  logicKLIMAXTarget2AntiBoost->SetVisAttributes(G4Colour(1.,0.3,0.2));
+  logicKLIMAXTarget2AntiBoost->SetSensitiveDetector(KLT2AntiBoost_SD);
+
+  G4cout << "TARGET 1 X: " << posx_kltarget1AntiBoost_2 - 0.5*kltarget1AntiBoost_z_2 << " " << posx_kltarget1AntiBoost_2 << " ";
+  G4cout << posx_kltarget1AntiBoost_2 + 0.5*kltarget1AntiBoost_z_2 << G4endl;
+  G4cout << "TARGET 1 Y: " << -0.5*dy_target1_ab_2 << " " << 0. << " " << 0.5*dy_target1_ab_2 << G4endl;
+  G4cout << "TARGET 1 Z: " << -0.5*dx_target1_ab_2 << " " << 0. << " " << 0.5*dx_target1_ab_2 << G4endl;
+  
+  G4cout << "TARGET 2 X: " << posx_kltarget2AntiBoost - 0.5*kltarget2AntiBoost_z << " " << posx_kltarget2AntiBoost << " ";
+  G4cout << posx_kltarget2AntiBoost+  0.5*kltarget2AntiBoost_z << G4endl;
+  G4cout << "TARGET 2 Y: " << -0.5*dy_target2_ab << " " << 0. << " " << 0.5*dy_target2_ab << G4endl;
+  G4cout << "TARGET 2 Z: " << -0.5*dx_target2_ab << " " << 0. << " " << 0.5*dx_target2_ab << G4endl;
 
 /// KLIMAXCZTAntiBoost
   G4double klcztAntiBoost_x = 26*mm; // like in june-july 2023
@@ -1690,6 +1737,7 @@ G4VPhysicalVolume* SiddhartaDetectorConstruction::Construct()
                                                                            logicKLIMAXHPGeShieldingBoost, "KLIMAXHPGeShieldingBoost4",
                                                                            World, false, 0, true);
   logicKLIMAXHPGeShieldingBoost->SetVisAttributes(G4Colour(0.5,0.5,0.5));
+
 
 // Shielding //
   G4double pos_shield;

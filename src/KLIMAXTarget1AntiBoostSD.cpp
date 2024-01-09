@@ -48,6 +48,10 @@ void KLIMAXTarget1AntiBoostSD::Initialize(G4HCofThisEvent* HCE)
 		analysis->histo->ntuData.KLT1AntiBoostKaonstop[1] = -1000000 / mm;
 		analysis->histo->ntuData.KLT1AntiBoostKaonstop[2] = -1000000 / mm;
 		analysis->histo->ntuData.kaonKinEKLT1AntiBoost = -1000000 / eV;
+		analysis->histo->ntuData.KinEKLT1AntiBoost = -1000000 / eV;
+		analysis->histo->ntuData.MomKLT1AntiBoost = -1000000 / eV;
+		analysis->histo->ntuData.lastKinEKLT1AntiBoost = -1000000 / eV;
+		analysis->histo->ntuData.lastMomKLT1AntiBoost = -1000000 / eV;
 		analysis->histo->ntuData.lastkaonKinEKLT1AntiBoost = -1000000 / eV;
 		analysis->histo->ntuData.pdgcodeKLT1AntiBoost = -1000000;
 		analysis->histo->ntuData.gammaKinEKLT1AntiBoost = -1000000;
@@ -80,7 +84,6 @@ G4bool KLIMAXTarget1AntiBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 	prevolname = aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName();
 	postmatname = aStep->GetPostStepPoint()->GetMaterial()->GetName();
 	postvolname = aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName();
-	G4double Kinener = aStep->GetTrack()->GetMomentum().mag();
 	G4ThreeVector pos = aStep->GetTrack()->GetPosition();
 	G4String preproc = "undefined";
 	G4String postproc = "undefined";
@@ -99,23 +102,28 @@ G4bool KLIMAXTarget1AntiBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 			sciEnergyMax = edep;
 			TimeKLT1AntiBoost = aStep->GetTrack()->GetGlobalTime();
 			pname = aStep->GetTrack()->GetDefinition()->GetParticleName();
+				
+			analysis->histo->ntuData.KinEKLT1AntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; 
+			analysis->histo->ntuData.MomKLT1AntiBoost = (aStep->GetTrack()->GetMomentum().mag()) / eV; 
 
 			analysis->histo->ntuData.TimeKLT1AntiBoost = TimeKLT1AntiBoost / ns;
 			analysis->histo->ntuData.XYZKLT1AntiBoost[0] = X / mm;
 			analysis->histo->ntuData.XYZKLT1AntiBoost[1] = Y / mm;
 			analysis->histo->ntuData.XYZKLT1AntiBoost[2] = Z / mm;
 		}
+			
+		analysis->histo->ntuData.lastKinEKLT1AntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; 
+		analysis->histo->ntuData.lastMomKLT1AntiBoost = (aStep->GetTrack()->GetMomentum().mag()) / eV; 
 		analysis->histo->ntuData.KLT1AntiBooststop[0] = X / mm;
 		analysis->histo->ntuData.KLT1AntiBooststop[1] = Y / mm;
 		analysis->histo->ntuData.KLT1AntiBooststop[2] = Z / mm;
 
 		if(analysis->histo->ntuData.pdgcodeKLT1AntiBoost == -321) //K-//
 		{
-			G4cout << "K- in Target 1 " << (aStep->GetTrack()->GetKineticEnergy()) / eV << G4endl;
+		//	G4cout << "K- in Target 1 " << (aStep->GetTrack()->GetKineticEnergy()) / eV << G4endl;
 			kaonCounter ++;
 
-			if( kaonCounter == 1 )
-				analysis->histo->ntuData.kaonKinEKLT1AntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the first kaon hit
+			if( kaonCounter == 1 ) {analysis->histo->ntuData.kaonKinEKLT1AntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV;} // get the Energy of the first kaon hit
 
 			analysis->histo->ntuData.lastkaonKinEKLT1AntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the last kaon hit
 			analysis->histo->ntuData.KLT1AntiBoostKaonstop[0] = X / mm ;

@@ -37,7 +37,7 @@ SiddhartaPhysicsList::SiddhartaPhysicsList():  G4VUserPhysicsList()
   cutForPionMinus = defaultCutValue;
   cutForProton    = defaultCutValue;
   cutForNeutron   = defaultCutValue;
-  SetVerboseLevel(1);
+  SetVerboseLevel(0);
 
   G4EmParameters* param = G4EmParameters::Instance();
   param->SetMaxEnergy(100*GeV);

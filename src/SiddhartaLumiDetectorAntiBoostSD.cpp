@@ -85,9 +85,9 @@ G4bool SiddhartaLumiDetectorAntiBoostSD::ProcessHits(G4Step* aStep,G4TouchableHi
 		}
 		if(aStep->GetTrack()->GetDynamicParticle()->GetPDGcode()==-321) // KAONS
 		{
-			G4cout << "K- in LumiAB " << (aStep->GetTrack()->GetKineticEnergy()) / eV << G4endl;
+//			G4cout << "K- in LumiAB " << (aStep->GetTrack()->GetKineticEnergy()) / eV << G4endl;
 			kaonCounter++;
-			if(kaonCounter == 1)	analysis->histo->ntuData.kaonKinELMAntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the first kaon hit
+			if(kaonCounter == 1) {analysis->histo->ntuData.kaonKinELMAntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV;} // get the Energy of the first kaon hit
 			analysis->histo->ntuData.lastkaonKinELMAntiBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the last kaon hit
 			analysis->histo->ntuData.XYZLMAntiBoostKaonstop[0] = X/mm;
 			analysis->histo->ntuData.XYZLMAntiBoostKaonstop[1] = Y/mm;

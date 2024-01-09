@@ -47,6 +47,10 @@ void KLIMAXTargetBoostSD::Initialize(G4HCofThisEvent* HCE)
 		analysis->histo->ntuData.KLTBoostKaonstop[0] = -1000000 / mm; 
 		analysis->histo->ntuData.KLTBoostKaonstop[1] = -1000000 / mm;
 		analysis->histo->ntuData.KLTBoostKaonstop[2] = -1000000 / mm;
+		analysis->histo->ntuData.KinEKLTBoost = -1000000 / eV;
+		analysis->histo->ntuData.MomKLTBoost = -1000000 / eV;
+		analysis->histo->ntuData.lastKinEKLTBoost = -1000000 / eV;
+		analysis->histo->ntuData.lastMomKLTBoost = -1000000 / eV;
 		analysis->histo->ntuData.kaonKinEKLTBoost = -1000000 / eV;
 		analysis->histo->ntuData.lastkaonKinEKLTBoost = -1000000 / eV;
 		analysis->histo->ntuData.pdgcodeKLTBoost = -1000000;
@@ -100,11 +104,15 @@ G4bool KLIMAXTargetBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 			TimeKLTBoost = aStep->GetTrack()->GetGlobalTime();
 			pname = aStep->GetTrack()->GetDefinition()->GetParticleName();
 
+			analysis->histo->ntuData.KinEKLTBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; 
+			analysis->histo->ntuData.MomKLTBoost = (aStep->GetTrack()->GetMomentum().mag()) / eV; 
 			analysis->histo->ntuData.TimeKLTBoost = TimeKLTBoost / ns;
 			analysis->histo->ntuData.XYZKLTBoost[0] = X / mm;
 			analysis->histo->ntuData.XYZKLTBoost[1] = Y / mm;
 			analysis->histo->ntuData.XYZKLTBoost[2] = Z / mm;
 		}
+		analysis->histo->ntuData.lastKinEKLTBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; 
+		analysis->histo->ntuData.lastMomKLTBoost = (aStep->GetTrack()->GetMomentum().mag()) / eV; 
 		analysis->histo->ntuData.KLTBooststop[0] = X / mm;
 		analysis->histo->ntuData.KLTBooststop[1] = Y / mm;
 		analysis->histo->ntuData.KLTBooststop[2] = Z / mm;
@@ -114,8 +122,7 @@ G4bool KLIMAXTargetBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
 			G4cout << "K- in Target 1 " << (aStep->GetTrack()->GetKineticEnergy()) / eV << G4endl;
 			kaonCounter ++;
 
-			if( kaonCounter == 1 )
-				analysis->histo->ntuData.kaonKinEKLTBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the first kaon hit
+			if( kaonCounter == 1 ) {analysis->histo->ntuData.kaonKinEKLTBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV;} // get the Energy of the first kaon hit
 
 			analysis->histo->ntuData.lastkaonKinEKLTBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the last kaon hit
 			analysis->histo->ntuData.KLTBoostKaonstop[0] = X / mm ;

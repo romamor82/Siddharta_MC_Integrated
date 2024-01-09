@@ -110,7 +110,7 @@ G4bool SiddhartaTrackerSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
       G4double diffx =  cos(th)*(pposx - sposx) + sin(th)*(pposz - sposz);
       G4double diffy =  pposy - sposy;
       G4double diffz = -sin(th)*(pposx - sposx) + cos(th)*(pposz - sposz);
-
+/*
       if (abs(diffx) > 0.5*450.*um) {
         G4cout << "Problem in X "<< G4endl;
         G4cout << "--- "<< isdd << G4endl;
@@ -132,6 +132,7 @@ G4bool SiddhartaTrackerSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
         G4cout << "-Y- " << pposy << " " << sposy << " " << diffy << G4endl;
         G4cout << "-Z- " << pposz << " " << sposz << " " << diffz << G4endl;
       }
+*/
       analysis->histo->ntuData.XYZInSDD[nHitFull-1][0] = diffx/mm;
       analysis->histo->ntuData.XYZInSDD[nHitFull-1][1] = diffy/mm;
       analysis->histo->ntuData.XYZInSDD[nHitFull-1][2] = diffz/mm;

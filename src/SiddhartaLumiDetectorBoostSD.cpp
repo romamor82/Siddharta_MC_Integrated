@@ -91,8 +91,7 @@ G4bool SiddhartaLumiDetectorBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistor
     {
       kaonCounter++;
 
-      if (kaonCounter == 1)
-        analysis->histo->ntuData.kaonKinELMBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the first kaon hit
+      if (kaonCounter == 1) {analysis->histo->ntuData.kaonKinELMBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV;} // get the Energy of the first kaon hit
 
       analysis->histo->ntuData.lastkaonKinELMBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the last kaon hit
       analysis->histo->ntuData.XYZLMBoostKaonstop[0] = X/mm;

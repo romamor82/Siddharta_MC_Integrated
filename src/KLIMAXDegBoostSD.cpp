@@ -108,8 +108,7 @@ G4bool KLIMAXDegBoostSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
         analysis->histo->ntuData.XYZKLDBoost[2] = Z / mm;
         kaonCounter ++;
 
-        if (kaonCounter == 1)
-          analysis->histo->ntuData.kaonKinEKLDBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the first kaon hit
+        if (kaonCounter == 1){analysis->histo->ntuData.kaonKinEKLDBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV;} // get the Energy of the first kaon hit
 
         analysis->histo->ntuData.lastkaonKinEKLDBoost = (aStep->GetTrack()->GetKineticEnergy()) / eV; // get the Energy of the last kaon hit
       }

@@ -139,203 +139,345 @@ void SiddhartaAnalysisManager::EndOfRun()
 
 void SiddhartaAnalysisManager::BeginOfEvent()
 {
-  histo->ntuData.nHitSDD = 0;
-  histo->ntuData.NbAnti = 0;
-  for (G4int i=0;i<MaxHits;i++) {
-    for (G4int j=0;j<20;j++) {
-      histo->ntuData.parentName[i][j] = '\0';
-    }
-  }
-  for (G4int i=0;i<MaxAnti;i++) {
-    for (G4int j=0;j<20;j++) {
-      histo->ntuData.parentNameAnti[i][j] = '\0';
-    }
-  }
+	histo->ntuData.nHitSDD = 0;
+	histo->ntuData.NbAnti = 0;
+	for (G4int i=0;i<MaxHits;i++) {
+		for (G4int j=0;j<20;j++) {
+			histo->ntuData.parentName[i][j] = '\0';
+		}
+	}
+	for (G4int i=0;i<MaxAnti;i++) {
+		for (G4int j=0;j<20;j++) {
+			histo->ntuData.parentNameAnti[i][j] = '\0';
+		}
+	}
+
+	histo->ntuData.particleNameLMBoost[0] = '\0';
+	histo->ntuData.pdgcodeLMBoost = -1000000;
+	histo->ntuData.EnergyDepLMBoost = -1000000./eV;
+	histo->ntuData.TimeLMBoost = -1000000./ns;
+	histo->ntuData.XYZLMBoost[0] = -1000000./mm;
+	histo->ntuData.XYZLMBoost[1] = -1000000./mm;
+	histo->ntuData.XYZLMBoost[2] = -1000000./mm;
+	histo->ntuData.XYZLMBoostKaonstop[0] = -1000000./mm;
+	histo->ntuData.XYZLMBoostKaonstop[1] = -1000000./mm;
+	histo->ntuData.XYZLMBoostKaonstop[2] = -1000000./mm;
+	histo->ntuData.lastkaonKinELMBoost = -1000000./eV;
+	histo->ntuData.particleNameLMAntiBoost[0] = '\0';
+	histo->ntuData.pdgcodeLMAntiBoost = -1000000;
+	histo->ntuData.EnergyDepLMAntiBoost = -1000000./eV;
+	histo->ntuData.TimeLMAntiBoost = -1000000./ns;
+	histo->ntuData.XYZLMAntiBoost[0] = -1000000./mm;
+	histo->ntuData.XYZLMAntiBoost[1] = -1000000./mm;
+	histo->ntuData.XYZLMAntiBoost[2] = -1000000./mm;
+	histo->ntuData.XYZLMAntiBoostKaonstop[0] = -1000000./mm;
+	histo->ntuData.XYZLMAntiBoostKaonstop[1] = -1000000./mm;
+	histo->ntuData.XYZLMAntiBoostKaonstop[2] = -1000000./mm;
+	histo->ntuData.lastkaonKinELMAntiBoost = -1000000./eV;
+
+	histo->ntuData.KLDAntiBooststop[0] = -1000000 / mm;
+	histo->ntuData.KLDAntiBooststop[1] = -1000000 /  mm;
+	histo->ntuData.KLDAntiBooststop[2] = -1000000 / mm;
+	histo->ntuData.EnergyDepKLDAntiBoost = -1000000 / eV;
+	histo->ntuData.TimeKLDAntiBoost = -1000000 / ns;
+	histo->ntuData.XYZKLDAntiBoost[0] = -1000000 / mm;
+	histo->ntuData.XYZKLDAntiBoost[1] = -1000000 / mm;
+	histo->ntuData.XYZKLDAntiBoost[2] = -1000000 / mm;
+	histo->ntuData.kaonKinEKLDAntiBoost = -1000000 / eV;
+	histo->ntuData.lastkaonKinEKLDAntiBoost = -1000000 / eV;
+	histo->ntuData.pdgcodeKLDAntiBoost = -1000000;
+
+	histo->ntuData.KLT1AntiBooststop[0] = -1000000 / mm;
+	histo->ntuData.KLT1AntiBooststop[1] = -1000000 /  mm;
+	histo->ntuData.KLT1AntiBooststop[2] = -1000000 / mm;
+	histo->ntuData.EnergyDepKLT1AntiBoost = -1000000 / eV;
+	histo->ntuData.TimeKLT1AntiBoost = -1000000 / ns;
+	histo->ntuData.XYZKLT1AntiBoost[0] = -1000000 / mm;
+	histo->ntuData.XYZKLT1AntiBoost[1] = -1000000 / mm;
+	histo->ntuData.XYZKLT1AntiBoost[2] = -1000000 / mm;
+	histo->ntuData.KLT1AntiBoostKaonstop[0] = -1000000 / mm; 
+	histo->ntuData.KLT1AntiBoostKaonstop[1] = -1000000 / mm;
+	histo->ntuData.KLT1AntiBoostKaonstop[2] = -1000000 / mm;
+	histo->ntuData.kaonKinEKLT1AntiBoost = -1000000 / eV;
+	histo->ntuData.KinEKLT1AntiBoost = -1000000 / eV;
+	histo->ntuData.MomKLT1AntiBoost = -1000000 / eV;
+	histo->ntuData.lastKinEKLT1AntiBoost = -1000000 / eV;
+	histo->ntuData.lastMomKLT1AntiBoost = -1000000 / eV;
+	histo->ntuData.lastkaonKinEKLT1AntiBoost = -1000000 / eV;
+	histo->ntuData.pdgcodeKLT1AntiBoost = -1000000;
+	histo->ntuData.gammaKinEKLT1AntiBoost = -1000000;
+
+	histo->ntuData.KLT2AntiBooststop[0] = -1000000 / mm;
+	histo->ntuData.KLT2AntiBooststop[1] = -1000000 /  mm;
+	histo->ntuData.KLT2AntiBooststop[2] = -1000000 / mm;
+	histo->ntuData.EnergyDepKLT2AntiBoost = -1000000 / eV;
+	histo->ntuData.TimeKLT2AntiBoost = -1000000 / ns;
+	histo->ntuData.XYZKLT2AntiBoost[0] = -1000000 / mm;
+	histo->ntuData.XYZKLT2AntiBoost[1] = -1000000 / mm;
+	histo->ntuData.XYZKLT2AntiBoost[2] = -1000000 / mm;
+	histo->ntuData.kaonKinEKLT2AntiBoost = -1000000 / eV;
+	histo->ntuData.KinEKLT2AntiBoost = -1000000 / eV;
+	histo->ntuData.MomKLT2AntiBoost = -1000000 / eV;
+	histo->ntuData.lastKinEKLT2AntiBoost = -1000000 / eV;
+	histo->ntuData.lastMomKLT2AntiBoost = -1000000 / eV;
+	histo->ntuData.lastkaonKinEKLT2AntiBoost = -1000000 / eV;
+	histo->ntuData.pdgcodeKLT2AntiBoost = -1000000;
+	histo->ntuData.gammaKinEKLT2AntiBoost = -1000000;
+
+	histo->ntuData.KLBWAntiBooststop[0] = -1000000 / mm ;
+	histo->ntuData.KLBWAntiBooststop[1] = -1000000 /  mm ;
+	histo->ntuData.KLBWAntiBooststop[2] = -1000000 / mm ;
+	histo->ntuData.EnergyDepKLBWAntiBoost = -1000000 / eV;
+	histo->ntuData.TimeKLBWAntiBoost = -1000000 / ns;
+	histo->ntuData.XYZKLBWAntiBoost[0] = -1000000 / mm;
+	histo->ntuData.XYZKLBWAntiBoost[1] = -1000000 / mm;
+	histo->ntuData.XYZKLBWAntiBoost[2] = -1000000 / mm;
+	histo->ntuData.kaonKinEKLBWAntiBoost = -1000000 / eV;
+	histo->ntuData.lastkaonKinEKLBWAntiBoost = -1000000 / eV;
+	histo->ntuData.pdgcodeKLBWAntiBoost = -1000000;
+
+	histo->ntuData.TotalEnergyDepKLCZTAntiBoost = -1000000. / eV;
+	histo->ntuData.nHitCZTAntiBoost = 0;
+
+	for (int i=0; i<MaxCZTHits; i++) {
+		histo->ntuData.pdgcodeKLCZTAntiBoost[i] = -1000000;
+		histo->ntuData.EnergyDepKLCZTAntiBoost[i] = -1000000. / eV;
+		histo->ntuData.TimeKLCZTAntiBoost[i] = -1000000. / ns;
+		histo->ntuData.XYZKLCZTAntiBoost[0][i] = -1000000. / mm;
+		histo->ntuData.XYZKLCZTAntiBoost[1][i] = -1000000. / mm;
+		histo->ntuData.XYZKLCZTAntiBoost[2][i] = -1000000. / mm;
+		histo->ntuData.kaonKinEKLCZTAntiBoost[i] = -1000000. / eV;
+	}
+	histo->ntuData.gammaKinEKLCZTAntiBoost = -1000000. / eV;
+
+	histo->ntuData.KLDBooststop[0] = -1000000 / mm;
+	histo->ntuData.KLDBooststop[1] = -1000000 /  mm;
+	histo->ntuData.KLDBooststop[2] = -1000000 / mm;
+	histo->ntuData.EnergyDepKLDBoost = -1000000 / eV;
+	histo->ntuData.TimeKLDBoost = -1000000 / ns;
+	histo->ntuData.XYZKLDBoost[0] = -1000000 / mm;
+	histo->ntuData.XYZKLDBoost[1] = -1000000 / mm;
+	histo->ntuData.XYZKLDBoost[2] = -1000000 / mm;
+	histo->ntuData.kaonKinEKLDBoost = -1000000 / eV;
+	histo->ntuData.lastkaonKinEKLDBoost = -1000000 / eV;
+	histo->ntuData.pdgcodeKLDBoost = -1000000;
+
+	histo->ntuData.KLTBooststop[0] = -1000000 / mm;
+	histo->ntuData.KLTBooststop[1] = -1000000 /  mm;
+	histo->ntuData.KLTBooststop[2] = -1000000 / mm;
+	histo->ntuData.EnergyDepKLTBoost = -1000000 / eV;
+	histo->ntuData.TimeKLTBoost = -1000000 / ns;
+	histo->ntuData.XYZKLTBoost[0] = -1000000 / mm;
+	histo->ntuData.XYZKLTBoost[1] = -1000000 / mm;
+	histo->ntuData.XYZKLTBoost[2] = -1000000 / mm;
+	histo->ntuData.KLTBoostKaonstop[0] = -1000000 / mm; 
+	histo->ntuData.KLTBoostKaonstop[1] = -1000000 / mm;
+	histo->ntuData.KLTBoostKaonstop[2] = -1000000 / mm;
+	histo->ntuData.KinEKLTBoost = -1000000 / eV;
+	histo->ntuData.MomKLTBoost = -1000000 / eV;
+	histo->ntuData.lastKinEKLTBoost = -1000000 / eV;
+	histo->ntuData.lastMomKLTBoost = -1000000 / eV;
+	histo->ntuData.kaonKinEKLTBoost = -1000000 / eV;
+	histo->ntuData.lastkaonKinEKLTBoost = -1000000 / eV;
+	histo->ntuData.pdgcodeKLTBoost = -1000000;
+	histo->ntuData.gammaKinEKLTBoost = -1000000; 
+
+	for (int i=0; i<MaxCZTHits; i++) {
+		histo->ntuData.pdgcodeKLHPGeBoost[i] = -1000000;
+		histo->ntuData.EnergyDepKLHPGeBoost[i] = -1000000. / eV;
+		histo->ntuData.TimeKLHPGeBoost[i] = -1000000. / ns;
+		histo->ntuData.XYZKLHPGeBoost[0][i] = -1000000. / mm;
+		histo->ntuData.XYZKLHPGeBoost[1][i] = -1000000. / mm;
+		histo->ntuData.XYZKLHPGeBoost[2][i] = -1000000. / mm;
+		histo->ntuData.kaonKinEKLHPGeBoost[i] = -1000000. / eV;
+	}
+	histo->ntuData.gammaKinEKLHPGeBoost = -1000000. / eV;
+
 }
 
 
 
 void SiddhartaAnalysisManager::EndOfEvent(const G4Event* evt)
 {
-  if ( histo->ntuData.EnergyDepKMTop > 0 ) histo->fillHisto("71",histo->ntuData.EnergyDepKMTop*eV,1.);
-  if ( histo->ntuData.EnergyDepKMBottom > 0 ) histo->fillHisto("81",histo->ntuData.EnergyDepKMBottom*eV,1.);
-  if ( histo->ntuData.EnergyDepKMTop > 3000000 ) {
-    histo->fillHisto("72",histo->ntuData.EnergyDepKMTop*eV,1.);
-    if ( histo->ntuData.EnergyDepKMBottom > 3000000 ) {
-      histo->fillHisto("73",histo->ntuData.EnergyDepKMTop*eV,1.);
-      if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 45 ) {
-        histo->fillHisto("74",histo->ntuData.EnergyDepKMTop*eV,1.);
-      }
-      if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 40 ) {
-        histo->fillHisto("75",histo->ntuData.EnergyDepKMTop*eV,1.);
-      }
-      if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 35 ) {
-        histo->fillHisto("76",histo->ntuData.EnergyDepKMTop*eV,1.);
-      }
-      if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 30 ) {
-        histo->fillHisto("77",histo->ntuData.EnergyDepKMTop*eV,1.);
-      }
-      if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 25 ) {
-        histo->fillHisto("78",histo->ntuData.EnergyDepKMTop*eV,1.);
-      }
-    }
-  }
-  if ( histo->ntuData.EnergyDepKMTop > 3000000 ) {
-    histo->fillHisto("82",histo->ntuData.EnergyDepKMTop*eV,1.);
-  }
-  if ( histo->ntuData.EnergyDepKMTop > 3e6 &&
-       histo->ntuData.EnergyDepKMTop < 7e6 &&
-       histo->ntuData.EnergyDepKMBottom > 3e6 &&
-       histo->ntuData.EnergyDepKMBottom < 7e6 &&
-       histo->ntuData.TimeKMTop > 1.2         &&
-       histo->ntuData.TimeKMTop < 2.          &&
-       histo->ntuData.TimeKMBottom > 1.2         &&
-       histo->ntuData.TimeKMBottom < 2.          &&
-       histo->ntuData.XYZKMBottom[0] > -50.    &&
-       histo->ntuData.XYZKMBottom[0] <  50.
-          )
-  {
-      histo->fillHisto3("8",histo->ntuData.XYZstopK[0],histo->ntuData.XYZstopK[2],histo->ntuData.XYZstopK[1],1.); // with kaon trigger cut
-      histo->fillHisto3("9",histo->ntuData.XYZstopKP[0],histo->ntuData.XYZstopKP[2],histo->ntuData.XYZstopKP[1],1.); // with kaon trigger cut
-  }
+	if ( histo->ntuData.EnergyDepKMTop > 0 ) histo->fillHisto("71",histo->ntuData.EnergyDepKMTop*eV,1.);
+	if ( histo->ntuData.EnergyDepKMBottom > 0 ) histo->fillHisto("81",histo->ntuData.EnergyDepKMBottom*eV,1.);
+	if ( histo->ntuData.EnergyDepKMTop > 3000000 ) {
+		histo->fillHisto("72",histo->ntuData.EnergyDepKMTop*eV,1.);
+		if ( histo->ntuData.EnergyDepKMBottom > 3000000 ) {
+			histo->fillHisto("73",histo->ntuData.EnergyDepKMTop*eV,1.);
+			if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 45 ) {
+				histo->fillHisto("74",histo->ntuData.EnergyDepKMTop*eV,1.);
+			}
+			if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 40 ) {
+				histo->fillHisto("75",histo->ntuData.EnergyDepKMTop*eV,1.);
+			}
+			if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 35 ) {
+				histo->fillHisto("76",histo->ntuData.EnergyDepKMTop*eV,1.);
+			}
+			if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 30 ) {
+				histo->fillHisto("77",histo->ntuData.EnergyDepKMTop*eV,1.);
+			}
+			if ( sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2]) < 25 ) {
+				histo->fillHisto("78",histo->ntuData.EnergyDepKMTop*eV,1.);
+			}
+		}
+	}
+	if ( histo->ntuData.EnergyDepKMTop > 3000000 ) {
+		histo->fillHisto("82",histo->ntuData.EnergyDepKMTop*eV,1.);
+	}
+	if ( histo->ntuData.EnergyDepKMTop > 3e6 &&
+			histo->ntuData.EnergyDepKMTop < 7e6 &&
+			histo->ntuData.EnergyDepKMBottom > 3e6 &&
+			histo->ntuData.EnergyDepKMBottom < 7e6 &&
+			histo->ntuData.TimeKMTop > 1.2         &&
+			histo->ntuData.TimeKMTop < 2.          &&
+			histo->ntuData.TimeKMBottom > 1.2         &&
+			histo->ntuData.TimeKMBottom < 2.          &&
+			histo->ntuData.XYZKMBottom[0] > -50.    &&
+			histo->ntuData.XYZKMBottom[0] <  50.
+	   )
+	{
+		histo->fillHisto3("8",histo->ntuData.XYZstopK[0],histo->ntuData.XYZstopK[2],histo->ntuData.XYZstopK[1],1.); // with kaon trigger cut
+		histo->fillHisto3("9",histo->ntuData.XYZstopKP[0],histo->ntuData.XYZstopKP[2],histo->ntuData.XYZstopKP[1],1.); // with kaon trigger cut
+	}
 
-  SiddhartaCard* mycard = SiddhartaCard::getInstance();
-  int SiddhartaSetup = mycard->variables["SiddhartaSetupVersion"];
+	SiddhartaCard* mycard = SiddhartaCard::getInstance();
+	int SiddhartaSetup = mycard->variables["SiddhartaSetupVersion"];
 
-  G4TrajectoryContainer* trajectoryContainer = evt->GetTrajectoryContainer();
-  G4int n_trajectories = 0;
-  if (trajectoryContainer)
-    n_trajectories = trajectoryContainer->entries();
+	G4TrajectoryContainer* trajectoryContainer = evt->GetTrajectoryContainer();
+	G4int n_trajectories = 0;
+	if (trajectoryContainer)
+		n_trajectories = trajectoryContainer->entries();
 
-  
-  bool sddhit = false;
-  bool czthit = false;
-  bool hpgehit = false;
 
-  int ACTIVE_DET_ID = mycard->variables["activeDetMode"];
+	bool sddhit = false;
+	bool czthit = false;
+	bool hpgehit = false;
 
-  if (histo->ntuData.nHitSDD > 0 || histo->ntuData.NbAnti > 0 || histo->ntuData.EnergyDepKMTop > 0
-             || histo->ntuData.EnergyDepKMBottom > 0
-             || histo->ntuData.EnergyDepLMAntiBoost > 0
-             || histo->ntuData.EnergyDepLMBoost > 0) 
-  {
-	  int Anti_size = 9;
-	  if ( SiddhartaSetup == 2 || SiddhartaSetup == 6 )
-		  Anti_size = 9;
-	  if ( SiddhartaSetup == 7 || SiddhartaSetup == 8 || SiddhartaSetup == 2020 || SiddhartaSetup == 2023)
-		  Anti_size = 17;
+	int ACTIVE_DET_ID = mycard->variables["activeDetMode"];
 
-	  G4String pname ="";
-	  for (G4int j=0; j<histo->ntuData.nHitSDD; j++) {
-		  for (G4int i=0; i<n_trajectories; i++) {
-			  G4Trajectory* trj = (G4Trajectory*)(*(trajectoryContainer))[i];
-			  pname = trj->GetParticleName();
-			  int ilen = strlen(pname);
+	if (histo->ntuData.nHitSDD > 0 || histo->ntuData.NbAnti > 0 || histo->ntuData.EnergyDepKMTop > 0
+			|| histo->ntuData.EnergyDepKMBottom > 0
+			|| histo->ntuData.EnergyDepLMAntiBoost > 0
+			|| histo->ntuData.EnergyDepLMBoost > 0) 
+	{
+		int Anti_size = 9;
+		if ( SiddhartaSetup == 2 || SiddhartaSetup == 6 )
+			Anti_size = 9;
+		if ( SiddhartaSetup == 7 || SiddhartaSetup == 8 || SiddhartaSetup == 2020 || SiddhartaSetup == 2023)
+			Anti_size = 17;
 
-			  if (trj->GetTrackID() == histo->ntuData.parentID[j]) {
-				  for(G4int k=0; k<ilen; k++) {
-					  histo->ntuData.parentName[j][k] = (pname.data())[k];
-				  }
-				  histo->ntuData.parentName[j][ilen] = '\0';
-			  }
-		  }
-	  }
+		G4String pname ="";
+		for (G4int j=0; j<histo->ntuData.nHitSDD; j++) {
+			for (G4int i=0; i<n_trajectories; i++) {
+				G4Trajectory* trj = (G4Trajectory*)(*(trajectoryContainer))[i];
+				pname = trj->GetParticleName();
+				int ilen = strlen(pname);
 
-	  for (G4int i=0;i<n_trajectories;i++) {
-		  G4Trajectory* trj = (G4Trajectory*)(*(trajectoryContainer))[i];
-		  pname = trj->GetParticleName();
-		  int ilen = strlen(pname);
+				if (trj->GetTrackID() == histo->ntuData.parentID[j]) {
+					for(G4int k=0; k<ilen; k++) {
+						histo->ntuData.parentName[j][k] = (pname.data())[k];
+					}
+					histo->ntuData.parentName[j][ilen] = '\0';
+				}
+			}
+		}
 
-		  for (G4int l=0;l<Anti_size;l++) {
-			  if (trj->GetTrackID() == histo->ntuData.parentIDAnti[l]) {
-				  for(G4int k=0;k<ilen;k++) {
-					  histo->ntuData.parentNameAnti[l][k] = (pname.data())[k];
-				  }
-				  histo->ntuData.parentNameAnti[l][ilen] = '\0';
-			  }
-		  }
-	  }
+		for (G4int i=0;i<n_trajectories;i++) {
+			G4Trajectory* trj = (G4Trajectory*)(*(trajectoryContainer))[i];
+			pname = trj->GetParticleName();
+			int ilen = strlen(pname);
 
-	  sddhit = true;
+			for (G4int l=0;l<Anti_size;l++) {
+				if (trj->GetTrackID() == histo->ntuData.parentIDAnti[l]) {
+					for(G4int k=0;k<ilen;k++) {
+						histo->ntuData.parentNameAnti[l][k] = (pname.data())[k];
+					}
+					histo->ntuData.parentNameAnti[l][ilen] = '\0';
+				}
+			}
+		}
 
-  }
-	  if((histo->ntuData.EnergyDepLMAntiBoost>-1)||(histo->ntuData.EnergyDepKLDAntiBoost>0)||(histo->ntuData.EnergyDepKLT1AntiBoost>0)||(histo->ntuData.EnergyDepKLT2AntiBoost>0)||(histo->ntuData.EnergyDepKLBWAntiBoost>0)||(histo->ntuData.TotalEnergyDepKLCZTAntiBoost>0)) czthit = true;
-	  if((histo->ntuData.EnergyDepLMBoost>0)||(histo->ntuData.EnergyDepKLDBoost>0)||(histo->ntuData.EnergyDepKLTBoost>0)||(histo->ntuData.TotalEnergyDepKLHPGeBoost>0)) hpgehit = true;
+		sddhit = true;
 
-switch(ACTIVE_DET_ID)
-{
-	case 1: if(sddhit) histo->fillTuple("0"); break;
-	case 2: if(czthit) histo->fillTuple("0"); break;
-	case 3: if(hpgehit) histo->fillTuple("0"); break;
-	case 4: if(sddhit||czthit||hpgehit) histo->fillTuple("0"); break;
-	case 5: if(sddhit||czthit) histo->fillTuple("0"); break;
-	case 6: if(sddhit||hpgehit) histo->fillTuple("0"); break;
-	case 7: if(czthit||hpgehit) histo->fillTuple("0"); break;
-}
+	}
+	if((histo->ntuData.EnergyDepLMAntiBoost>0)||(histo->ntuData.EnergyDepKLDAntiBoost>0)||(histo->ntuData.EnergyDepKLT1AntiBoost>0)||(histo->ntuData.EnergyDepKLT2AntiBoost>0)||(histo->ntuData.EnergyDepKLBWAntiBoost>0)||(histo->ntuData.TotalEnergyDepKLCZTAntiBoost>0)) czthit = true;
+	if((histo->ntuData.EnergyDepLMBoost>0)||(histo->ntuData.EnergyDepKLDBoost>0)||(histo->ntuData.EnergyDepKLTBoost>0)||(histo->ntuData.TotalEnergyDepKLHPGeBoost>0)) hpgehit = true;
 
-  G4double cut1 = 10000.;
-  G4double cut2 = 0.8;
-  G4double cut3 = 1.05;
-  G4double cut4 = 3000000;
-  if ( SiddhartaSetup == 1 ) {
-    cut1 = 10000;
-    cut2 = 0.75;
-    cut3 = 1.20;
-    cut4 = 3000000;
-  } else if ( SiddhartaSetup == 2 ) {
-    cut1 = 45.; // Kaon detector on the top of the shielding
-    cut2 = 1.6;
-    cut3 = 2.10;
-    cut4 = 3000000;
-  } else if ( SiddhartaSetup == 3 ) {
-    cut1 = 45.;
-    cut2 = 1.3;
-    cut3 = 1.90;
-    cut4 = 3000000;
-  } else if ( SiddhartaSetup == 6 ) {
-    cut1 = 45.;
-    cut2 = 1.6;
-    cut3 = 2.25;
-    cut4 = 3000000;
-  } else {
-    cut1 = 45.;
-    cut2 = 1.3;
-    cut3 = 1.90;
-    cut4 = 3000000;
-  }
+	switch(ACTIVE_DET_ID)
+	{
+		case 1: if(sddhit) histo->fillTuple("0"); break;
+		case 2: if(czthit) histo->fillTuple("0"); break;
+		case 3: if(hpgehit) histo->fillTuple("0"); break;
+		case 4: if(sddhit||czthit||hpgehit) histo->fillTuple("0"); break;
+		case 5: if(sddhit||czthit) histo->fillTuple("0"); break;
+		case 6: if(sddhit||hpgehit) histo->fillTuple("0"); break;
+		case 7: if(czthit||hpgehit) histo->fillTuple("0"); break;
+	}
 
-  if (sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]
-                                +histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2])<cut1) {
-    histo->fillHisto("9",histo->ntuData.TimeKMTop,1.);
-    histo->fillHisto("10",histo->ntuData.EnergyDepKMTop,1.);
-    if ( histo->ntuData.EnergyDepKMTop > cut4 ) {
-      histo->fillHisto("11",histo->ntuData.TimeKMTop,1.);
-      if ( histo->ntuData.TimeKMTop > cut2 && histo->ntuData.TimeKMTop < cut3 ) {
-        histo->fillHisto("12",histo->ntuData.XYZKMTop[2],1.);
-        if (SiddhartaSetup == 6) {
-          bool triggerAnti = 0;
-          G4double cutT1 = 5.;
-          G4double cutT2 = 8.;
-          G4double cutT3 = 3000000.;
+	G4double cut1 = 10000.;
+	G4double cut2 = 0.8;
+	G4double cut3 = 1.05;
+	G4double cut4 = 3000000;
+	if ( SiddhartaSetup == 1 ) {
+		cut1 = 10000;
+		cut2 = 0.75;
+		cut3 = 1.20;
+		cut4 = 3000000;
+	} else if ( SiddhartaSetup == 2 ) {
+		cut1 = 45.; // Kaon detector on the top of the shielding
+		cut2 = 1.6;
+		cut3 = 2.10;
+		cut4 = 3000000;
+	} else if ( SiddhartaSetup == 3 ) {
+		cut1 = 45.;
+		cut2 = 1.3;
+		cut3 = 1.90;
+		cut4 = 3000000;
+	} else if ( SiddhartaSetup == 6 ) {
+		cut1 = 45.;
+		cut2 = 1.6;
+		cut3 = 2.25;
+		cut4 = 3000000;
+	} else {
+		cut1 = 45.;
+		cut2 = 1.3;
+		cut3 = 1.90;
+		cut4 = 3000000;
+	}
 
-//Create some function that will simplify these code -> Cuts should be defined or loaded before or elsewhere
-// Function to check the value in range
-          if ( histo->ntuData.TimeAnti[0] > cutT1 && histo->ntuData.TimeAnti[0] < cutT2 && histo->ntuData.EnergyAnti[0] > cutT3 ) triggerAnti = 1;
-          if ( histo->ntuData.TimeAnti[1] > cutT1 && histo->ntuData.TimeAnti[1] < cutT2 && histo->ntuData.EnergyAnti[1] > cutT3 ) triggerAnti = 1;
-          if ( histo->ntuData.TimeAnti[2] > cutT1 && histo->ntuData.TimeAnti[2] < cutT2 && histo->ntuData.EnergyAnti[2] > cutT3 ) triggerAnti = 1;
-          if ( histo->ntuData.TimeAnti[3] > cutT1 && histo->ntuData.TimeAnti[3] < cutT2 && histo->ntuData.EnergyAnti[3] > cutT3 ) triggerAnti = 1;
-          if ( histo->ntuData.TimeAnti[4] > cutT1 && histo->ntuData.TimeAnti[4] < cutT2 && histo->ntuData.EnergyAnti[4] > cutT3 ) triggerAnti = 1;
-          if ( histo->ntuData.TimeAnti[5] > cutT1 && histo->ntuData.TimeAnti[5] < cutT2 && histo->ntuData.EnergyAnti[5] > cutT3 ) triggerAnti = 1;
-          if ( histo->ntuData.TimeAnti[6] > cutT1 && histo->ntuData.TimeAnti[6] < cutT2 && histo->ntuData.EnergyAnti[6] > cutT3 ) triggerAnti = 1;
-          if ( histo->ntuData.TimeAnti[7] > cutT1 && histo->ntuData.TimeAnti[7] < cutT2 && histo->ntuData.EnergyAnti[7] > cutT3 ) triggerAnti = 1;
+	if (sqrt(histo->ntuData.XYZKMTop[0]*histo->ntuData.XYZKMTop[0]
+				+histo->ntuData.XYZKMTop[2]*histo->ntuData.XYZKMTop[2])<cut1) {
+		histo->fillHisto("9",histo->ntuData.TimeKMTop,1.);
+		histo->fillHisto("10",histo->ntuData.EnergyDepKMTop,1.);
+		if ( histo->ntuData.EnergyDepKMTop > cut4 ) {
+			histo->fillHisto("11",histo->ntuData.TimeKMTop,1.);
+			if ( histo->ntuData.TimeKMTop > cut2 && histo->ntuData.TimeKMTop < cut3 ) {
+				histo->fillHisto("12",histo->ntuData.XYZKMTop[2],1.);
+				if (SiddhartaSetup == 6) {
+					bool triggerAnti = 0;
+					G4double cutT1 = 5.;
+					G4double cutT2 = 8.;
+					G4double cutT3 = 3000000.;
 
-          if ( triggerAnti ) {
-            histo->fillHisto("13",histo->ntuData.TimeKMTop,1.);
-          }
-        }
-      }
-    }
-  }
+					//Create some function that will simplify these code -> Cuts should be defined or loaded before or elsewhere
+					// Function to check the value in range
+					if ( histo->ntuData.TimeAnti[0] > cutT1 && histo->ntuData.TimeAnti[0] < cutT2 && histo->ntuData.EnergyAnti[0] > cutT3 ) triggerAnti = 1;
+					if ( histo->ntuData.TimeAnti[1] > cutT1 && histo->ntuData.TimeAnti[1] < cutT2 && histo->ntuData.EnergyAnti[1] > cutT3 ) triggerAnti = 1;
+					if ( histo->ntuData.TimeAnti[2] > cutT1 && histo->ntuData.TimeAnti[2] < cutT2 && histo->ntuData.EnergyAnti[2] > cutT3 ) triggerAnti = 1;
+					if ( histo->ntuData.TimeAnti[3] > cutT1 && histo->ntuData.TimeAnti[3] < cutT2 && histo->ntuData.EnergyAnti[3] > cutT3 ) triggerAnti = 1;
+					if ( histo->ntuData.TimeAnti[4] > cutT1 && histo->ntuData.TimeAnti[4] < cutT2 && histo->ntuData.EnergyAnti[4] > cutT3 ) triggerAnti = 1;
+					if ( histo->ntuData.TimeAnti[5] > cutT1 && histo->ntuData.TimeAnti[5] < cutT2 && histo->ntuData.EnergyAnti[5] > cutT3 ) triggerAnti = 1;
+					if ( histo->ntuData.TimeAnti[6] > cutT1 && histo->ntuData.TimeAnti[6] < cutT2 && histo->ntuData.EnergyAnti[6] > cutT3 ) triggerAnti = 1;
+					if ( histo->ntuData.TimeAnti[7] > cutT1 && histo->ntuData.TimeAnti[7] < cutT2 && histo->ntuData.EnergyAnti[7] > cutT3 ) triggerAnti = 1;
+
+					if ( triggerAnti ) {
+						histo->fillHisto("13",histo->ntuData.TimeKMTop,1.);
+					}
+				}
+			}
+		}
+	}
 
 }
 
